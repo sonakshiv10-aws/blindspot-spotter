@@ -27,15 +27,22 @@ const AnalysisMatrix = ({ assumptions }: AnalysisMatrixProps) => {
   const [selectedAssumption, setSelectedAssumption] = useState<Assumption | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // Map risk (1-10) to Y position (350 to 50, inverted because SVG Y goes down)
-  const getRiskY = (risk: number) => 350 - ((risk - 1) / 9) * 300;
+  // Map risk (1-10) to Y position (400 to 100, inverted because SVG Y goes down) - adjusted for new viewBox
+  const getRiskY = (risk: number) => 400 - ((risk - 1) / 9) * 300;
   
-  // Map testability (1-10) to X position (50 to 350)
-  const getTestabilityX = (testability: number) => 50 + ((testability - 1) / 9) * 300;
+  // Map testability (1-10) to X position (100 to 400) - adjusted for new viewBox
+  const getTestabilityX = (testability: number) => 100 + ((testability - 1) / 9) * 300;
   
-  // Truncate text if too long
-  const truncate = (text: string, maxLength: number = 20) => {
-    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+  // Smart truncate text keeping important words
+  const truncate = (text: string, maxLength: number = 25) => {
+    if (text.length <= maxLength) return text;
+    // Try to break at word boundary
+    const truncated = text.substring(0, maxLength);
+    const lastSpace = truncated.lastIndexOf(' ');
+    if (lastSpace > maxLength * 0.6) {
+      return text.substring(0, lastSpace) + '...';
+    }
+    return truncated + '...';
   };
 
   // Get risk emoji and text
@@ -63,6 +70,38 @@ const AnalysisMatrix = ({ assumptions }: AnalysisMatrixProps) => {
     ];
     
     return positions[index % 4];
+  };
+
+  // Smart tooltip positioning to avoid cutoff
+  const getTooltipPosition = (x: number, y: number) => {
+    const tooltipWidth = 240;
+    const tooltipHeight = 130;
+    const padding = 15;
+    
+    let tooltipX = x - tooltipWidth / 2;
+    let tooltipY = y - tooltipHeight - 10; // Default: above dot
+    
+    // Check top boundary
+    if (y < tooltipHeight + padding) {
+      tooltipY = y + 15; // Show below dot
+    }
+    
+    // Check right boundary
+    if (x + tooltipWidth / 2 > 385) {
+      tooltipX = 385 - tooltipWidth - padding;
+    }
+    
+    // Check left boundary
+    if (x - tooltipWidth / 2 < 15) {
+      tooltipX = 15 + padding;
+    }
+    
+    // Check bottom boundary
+    if (y > 285) {
+      tooltipY = y - tooltipHeight - 10; // Show above dot
+    }
+    
+    return { x: tooltipX, y: tooltipY };
   };
 
   // Copy experiment to clipboard
@@ -99,50 +138,56 @@ Time: ${selectedAssumption.experiment.time}`;
   return (
     <>
       <div className="relative w-full h-full">
-        <svg viewBox="0 0 400 400" className="w-full h-full">
-          {/* Background */}
-          <rect width="400" height="400" fill="#FAFAFA" rx="8" />
+        <svg viewBox="0 0 500 500" className="w-full h-full" style={{ overflow: "visible" }}>
+          {/* Background - adjusted for new viewBox */}
+          <rect x="50" y="50" width="400" height="400" fill="#FAFAFA" rx="8" />
           
           {/* Test Now quadrant highlight (top-right) */}
-          <rect x="200" y="50" width="150" height="150" fill="#10B981" opacity="0.05" rx="4" />
-          <rect x="200" y="50" width="150" height="150" fill="none" stroke="#10B981" strokeWidth="2" opacity="0.3" rx="4" />
+          <rect x="250" y="100" width="150" height="150" fill="#10B981" opacity="0.05" rx="4" />
+          <rect x="250" y="100" width="150" height="150" fill="none" stroke="#10B981" strokeWidth="2" opacity="0.3" rx="4" />
           
           {/* Grid lines */}
-          <line x1="200" y1="50" x2="200" y2="350" stroke="#D1D5DB" strokeWidth="2" />
-          <line x1="50" y1="200" x2="350" y2="200" stroke="#D1D5DB" strokeWidth="2" />
+          <line x1="250" y1="100" x2="250" y2="400" stroke="#D1D5DB" strokeWidth="2" />
+          <line x1="100" y1="250" x2="400" y2="250" stroke="#D1D5DB" strokeWidth="2" />
           
           {/* Axis labels */}
-          <text x="30" y="130" textAnchor="middle" fontSize="12" fontWeight="600" fill="#6B7280" transform="rotate(-90 30 130)">
-            Risk if Wrong ↑
+          {/* Y-axis labels */}
+          <text x="80" y="105" textAnchor="middle" fontSize="14" fontWeight="600" fill="#374151">
+            High Risk if Wrong ↑
           </text>
-          <text x="80" y="370" textAnchor="start" fontSize="11" fontWeight="600" fill="#6B7280">
+          <text x="80" y="405" textAnchor="middle" fontSize="14" fontWeight="500" fill="#9CA3AF">
+            Low Risk if Wrong
+          </text>
+          
+          {/* X-axis labels */}
+          <text x="105" y="430" textAnchor="start" fontSize="14" fontWeight="600" fill="#374151">
             Hard to Test
           </text>
-          <text x="320" y="370" textAnchor="end" fontSize="11" fontWeight="600" fill="#6B7280">
+          <text x="395" y="430" textAnchor="end" fontSize="14" fontWeight="600" fill="#374151">
             Easy to Test →
           </text>
           
-          {/* Quadrant labels */}
+          {/* Quadrant labels - OUTSIDE matrix */}
           {/* TOP-LEFT: Critical Risk - RED */}
-          <text x="125" y="100" textAnchor="middle" fontSize="11" fontWeight="600" fill="#EF4444">
+          <text x="100" y="80" textAnchor="start" fontSize="16" fontWeight="600" fill="#EF4444">
             Critical Risk
           </text>
           
-          {/* TOP-RIGHT: Test Now - GREEN with Priority badge */}
-          <text x="275" y="95" textAnchor="middle" fontSize="11" fontWeight="600" fill="#10B981">
+          {/* TOP-RIGHT: Test Now - GREEN */}
+          <text x="400" y="80" textAnchor="end" fontSize="16" fontWeight="600" fill="#10B981">
             Test Now
           </text>
-          <text x="275" y="110" textAnchor="middle" fontSize="9" fontWeight="500" fill="#10B981" opacity="0.8">
+          <text x="400" y="95" textAnchor="end" fontSize="12" fontWeight="500" fill="#10B981" opacity="0.8">
             Priority #1
           </text>
           
           {/* BOTTOM-LEFT: Defer / Monitor - BLUE */}
-          <text x="125" y="300" textAnchor="middle" fontSize="11" fontWeight="600" fill="#3B82F6">
+          <text x="100" y="470" textAnchor="start" fontSize="16" fontWeight="600" fill="#3B82F6">
             Defer / Monitor
           </text>
           
           {/* BOTTOM-RIGHT: Quick Wins - YELLOW */}
-          <text x="275" y="300" textAnchor="middle" fontSize="11" fontWeight="600" fill="#F59E0B">
+          <text x="400" y="470" textAnchor="end" fontSize="16" fontWeight="600" fill="#F59E0B">
             Quick Wins
           </text>
           
@@ -217,40 +262,43 @@ Time: ${selectedAssumption.experiment.time}`;
                   fontWeight="600"
                   style={{ pointerEvents: "none" }}
                 >
-                  {truncate(assumption.text, 15)}
+                  {truncate(assumption.text, 25)}
                 </text>
 
-                {/* Hover tooltip */}
-                {isHovered && (
-                  <g>
-                    <foreignObject 
-                      x={x - 120} 
-                      y={y - 140} 
-                      width="240" 
-                      height="130"
-                    >
-                      <div className="bg-white rounded-lg shadow-lg p-4 border border-gray-200 animate-fade-in">
-                        <div className="text-sm font-semibold text-gray-900 mb-2">
-                          {assumption.text}
+                {/* Hover tooltip with smart positioning */}
+                {isHovered && (() => {
+                  const tooltipPos = getTooltipPosition(x, y);
+                  return (
+                    <g style={{ zIndex: 1000 }}>
+                      <foreignObject 
+                        x={tooltipPos.x} 
+                        y={tooltipPos.y} 
+                        width="240" 
+                        height="130"
+                      >
+                        <div className="bg-white rounded-lg shadow-lg p-4 border border-gray-200 animate-fade-in" style={{ zIndex: 1000 }}>
+                          <div className="text-sm font-semibold text-gray-900 mb-2">
+                            {assumption.text}
+                          </div>
+                          <div className="text-xs space-y-1 text-gray-600">
+                            <div>Risk: {assumption.risk}/10 {getRiskInfo(assumption.risk).emoji} {getRiskInfo(assumption.risk).level}</div>
+                            <div>Testability: {assumption.testability}/10 {getTestabilityInfo(assumption.testability).emoji} {getTestabilityInfo(assumption.testability).level}</div>
+                            {assumption.isHiddenBlindSpot && (
+                              <div className="mt-2 text-red-600 font-semibold">🚨 Hidden Blind Spot</div>
+                            )}
+                            <div className="mt-2 text-blue-600 font-medium">Click for experiment details →</div>
+                          </div>
                         </div>
-                        <div className="text-xs space-y-1 text-gray-600">
-                          <div>Risk: {assumption.risk}/10 {getRiskInfo(assumption.risk).emoji} {getRiskInfo(assumption.risk).level}</div>
-                          <div>Testability: {assumption.testability}/10 {getTestabilityInfo(assumption.testability).emoji} {getTestabilityInfo(assumption.testability).level}</div>
-                          {assumption.isHiddenBlindSpot && (
-                            <div className="mt-2 text-red-600 font-semibold">🚨 Hidden Blind Spot</div>
-                          )}
-                          <div className="mt-2 text-blue-600 font-medium">Click for experiment details →</div>
-                        </div>
-                      </div>
-                    </foreignObject>
-                  </g>
-                )}
+                      </foreignObject>
+                    </g>
+                  );
+                })()}
               </g>
             );
           })}
           
-          {/* Border */}
-          <rect width="400" height="400" fill="none" stroke="#D1D5DB" strokeWidth="2" rx="8" />
+          {/* Border - adjusted for new viewBox */}
+          <rect x="50" y="50" width="400" height="400" fill="none" stroke="#D1D5DB" strokeWidth="2" rx="8" />
         </svg>
       </div>
 
