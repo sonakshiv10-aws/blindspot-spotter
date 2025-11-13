@@ -27,6 +27,103 @@ interface AnalysisData {
   assumptions: Assumption[];
 }
 
+const MOCK_ANALYSIS: AnalysisData = {
+  "firstPrinciplesInsight": "The core assumption isn't about parking scarcity—it's about whether people value optionality over planning. Valet services work when spontaneity has higher value than the cost premium. Test: Are your users making last-minute decisions, or do they plan their parking in advance?",
+  "assumptions": [
+    {
+      "id": "assumption-1",
+      "text": "Parking scarcity exists in SF",
+      "isHiddenBlindSpot": false,
+      "risk": 9,
+      "testability": 9,
+      "experiment": {
+        "name": "Parking Data Analysis",
+        "method": "Research SFMTA reports + survey 50 drivers about parking difficulty",
+        "cost": "$0-500",
+        "time": "2 days"
+      }
+    },
+    {
+      "id": "assumption-2",
+      "text": "People trust strangers with their cars",
+      "isHiddenBlindSpot": false,
+      "risk": 9,
+      "testability": 7,
+      "experiment": {
+        "name": "Trust Experiment",
+        "method": "Offer manual valet service to 20 people, track acceptance rate",
+        "cost": "$200",
+        "time": "3 days"
+      }
+    },
+    {
+      "id": "assumption-3",
+      "text": "Users will pay premium for convenience",
+      "isHiddenBlindSpot": false,
+      "risk": 8,
+      "testability": 8,
+      "experiment": {
+        "name": "Price Sensitivity Test",
+        "method": "Survey 100 drivers with different price points ($5, $10, $15, $20)",
+        "cost": "$100",
+        "time": "1 week"
+      }
+    },
+    {
+      "id": "assumption-4",
+      "text": "Insurance liability is solvable",
+      "isHiddenBlindSpot": true,
+      "risk": 10,
+      "testability": 3,
+      "experiment": {
+        "name": "Legal Consultation",
+        "method": "Meet with insurance lawyers and review liability precedents",
+        "cost": "$2,000-5,000",
+        "time": "2-4 weeks"
+      }
+    },
+    {
+      "id": "assumption-5",
+      "text": "Unit economics work (valet cost + time + parking < user pays)",
+      "isHiddenBlindSpot": true,
+      "risk": 9,
+      "testability": 8,
+      "experiment": {
+        "name": "Manual Operations Test",
+        "method": "Hire 3 valets for one day, track: time per park, wages, parking costs vs. user willingness to pay",
+        "cost": "$500",
+        "time": "1 day"
+      }
+    },
+    {
+      "id": "assumption-6",
+      "text": "Drivers can book while driving safely",
+      "isHiddenBlindSpot": false,
+      "risk": 6,
+      "testability": 8,
+      "experiment": {
+        "name": "UX Usability Test",
+        "method": "Test voice booking or one-tap interface with 15 users in car simulator",
+        "cost": "$300",
+        "time": "3 days"
+      }
+    },
+    {
+      "id": "assumption-7",
+      "text": "Valets are available when/where needed",
+      "isHiddenBlindSpot": true,
+      "risk": 8,
+      "testability": 6,
+      "experiment": {
+        "name": "Supply Analysis",
+        "method": "Map demand patterns vs. valet availability in target neighborhoods",
+        "cost": "$200",
+        "time": "1 week"
+      }
+    }
+  ]
+};
+
 const Index = () => {
   const [userInput, setUserInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -95,103 +192,23 @@ const Index = () => {
   };
 
   const handleAnalyze = async () => {
-    // Check if API key exists
-    if (!apiKey) {
-      toast({
-        title: "API Key Required",
-        description: "Please add your Claude API key in Settings first",
-        variant: "destructive",
-      });
-      setIsSettingsOpen(true);
-      return;
-    }
-
     setIsLoading(true);
     setError(null);
     setShowResults(false);
     
     try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 4000,
-          messages: [
-            {
-              role: 'user',
-              content: `You are an expert product strategist who applies first principles thinking to validate assumptions.
-
-Analyze this product concept: "${userInput}"
-
-Your task:
-1. Generate 5-7 key assumptions this concept makes
-2. Include 2-3 HIDDEN assumptions the user likely didn't consider (these are blind spots)
-3. For each assumption, assess RISK (1-10, how bad if wrong) and TESTABILITY (1-10, where 10=very easy to test)
-4. Suggest a specific experiment to validate each assumption
-5. Provide ONE first principles insight that reframes the problem
-
-Return ONLY valid JSON with NO markdown formatting:
-{
-  "firstPrinciplesInsight": "string",
-  "assumptions": [
-    {
-      "id": "assumption-1",
-      "text": "Clear assumption statement",
-      "isHiddenBlindSpot": false,
-      "risk": 8,
-      "testability": 6,
-      "experiment": {
-        "name": "Experiment name",
-        "method": "How to test this",
-        "cost": "$100",
-        "time": "2 days"
-      }
-    }
-  ]
-}
-
-Quadrant assignment rules:
-- risk >= 7 AND testability >= 6: in firstPrinciplesInsight mention this should be tested first
-- risk >= 7 AND testability < 6: mention this is critical risk
-- risk < 7 AND testability >= 6: mention this is a quick win
-- risk < 7 AND testability < 6: mention this can be deferred`,
-            },
-          ],
-        }),
-      });
-
-      if (!response.ok) {
-        if (response.status === 401) {
-          throw new Error('Invalid API key. Please check your settings.');
-        }
-        throw new Error(`API request failed: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      console.log('Claude API Response:', data);
+      // Simulate API call with 3 second delay
+      await new Promise(resolve => setTimeout(resolve, 3000));
       
-      // Extract the text content
-      let textContent = data.content[0].text;
-      
-      // Remove markdown code blocks if present
-      textContent = textContent.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-      
-      // Parse JSON
-      const parsedData: AnalysisData = JSON.parse(textContent);
-      console.log('Parsed Analysis Data:', parsedData);
-      
-      setAnalysisData(parsedData);
+      // Use mock data
+      setAnalysisData(MOCK_ANALYSIS);
       setIsLoading(false);
       setShowResults(true);
       
+      const blindSpots = MOCK_ANALYSIS.assumptions.filter(a => a.isHiddenBlindSpot).length;
       toast({
         title: "Analysis Complete",
-        description: `Found ${parsedData.assumptions.length} assumptions`,
+        description: `Found ${MOCK_ANALYSIS.assumptions.length} assumptions (${blindSpots} blind spots)`,
       });
       
     } catch (err) {
@@ -358,7 +375,7 @@ Quadrant assignment rules:
           )}
 
           {showResults && !isLoading && analysisData && (
-            <div className="w-full max-w-2xl space-y-6">
+            <div className="w-full max-w-2xl space-y-6 animate-fade-in">
               {/* First Principles Insight */}
               <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg">
                 <p className="text-sm font-semibold text-blue-900 mb-1">💡 First Principles Insight</p>
@@ -367,9 +384,20 @@ Quadrant assignment rules:
               
               {/* Analysis Matrix */}
               <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-border">
+                {/* Blind Spots Badge */}
+                {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length > 0 && (
+                  <div className="mb-4 text-center">
+                    <span className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 text-red-700 rounded-full text-sm font-medium">
+                      🚨 {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length} Blind Spots Found
+                    </span>
+                  </div>
+                )}
                 <div className="aspect-square">
                   <AnalysisMatrix assumptions={analysisData.assumptions} />
                 </div>
+                <p className="text-xs text-muted-foreground text-center mt-4">
+                  Using mock data - real API will be connected via backend
+                </p>
               </div>
             </div>
           )}
