@@ -229,7 +229,7 @@ const Index = () => {
   return (
     <div className="h-screen flex flex-col bg-background">
       {/* Top Header - 15% */}
-      <header className="h-[15vh] flex flex-col items-center justify-center px-6 border-b border-border relative">
+      <header className="h-[15vh] flex flex-col items-center justify-center px-6 border-b border-border relative max-w-[1600px] mx-auto w-full">
         <h1 className="text-3xl lg:text-5xl font-bold text-center mb-2">
           Find the Assumptions You Didn't Know You Had
         </h1>
@@ -306,9 +306,9 @@ const Index = () => {
       </Dialog>
 
       {/* Main Section - 85% */}
-      <main className="h-[85vh] flex flex-col lg:flex-row justify-center">
-        {/* Left Panel - Fixed 420px width on desktop, full width on mobile */}
-        <div className="w-full lg:w-[420px] p-10 flex flex-col border-b lg:border-b-0 lg:border-r border-border overflow-y-auto">
+      <main className="h-[85vh] flex flex-col lg:flex-row justify-center max-w-[1600px] mx-auto w-full lg:gap-[60px] xl:px-10">
+        {/* Left Panel - Fixed 450px width on desktop, full width on mobile */}
+        <div className="w-full lg:w-[450px] p-10 flex flex-col border-b lg:border-b-0 border-border overflow-y-auto">
           <h2 className="text-2xl font-bold mb-6">What Are You Building?</h2>
           
           <Textarea
@@ -345,15 +345,15 @@ const Index = () => {
         </div>
 
         {/* Right Panel - Flexible width on desktop, full width on mobile */}
-        <div className="flex-1 w-full lg:max-w-[950px] overflow-y-auto">
+        <div className="flex-1 w-full lg:min-w-[950px] overflow-y-auto flex flex-col items-center">
           {!showResults && !isLoading && (
-            <div className="h-full flex items-center justify-center p-8">
+            <div className="h-full flex items-center justify-center p-8 w-full">
               <MatrixPreview />
             </div>
           )}
 
           {isLoading && (
-            <div className="h-full flex flex-col items-center justify-center p-8">
+            <div className="h-full flex flex-col items-center justify-center p-8 w-full">
               <div className="w-full max-w-md space-y-8 text-center">
                 <div className="relative mx-auto w-32 h-32">
                   <div className="absolute inset-0 border-4 border-primary/30 rounded-full"></div>
@@ -370,7 +370,7 @@ const Index = () => {
           )}
 
           {showResults && analysisData && (
-            <div className="p-6 lg:p-10 space-y-6">
+            <div className="p-6 lg:p-10 space-y-6 w-full max-w-[1100px]">
               {/* Blind Spots Badge */}
               {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length > 0 && (
                 <div className="inline-flex items-center gap-2 bg-red-50 text-red-700 px-4 py-2 rounded-full font-semibold text-sm shadow-sm">
