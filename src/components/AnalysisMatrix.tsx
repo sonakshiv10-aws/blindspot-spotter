@@ -194,7 +194,7 @@ Time: ${selectedAssumption.experiment.time}`;
             fill="#374151"
             transform="rotate(-90 50 212)"
           >
-            ↑ High Risk if Wrong →
+            High Risk if Wrong →
           </text>
           <text
             x="50"
@@ -205,7 +205,7 @@ Time: ${selectedAssumption.experiment.time}`;
             fill="#374151"
             transform="rotate(-90 50 537)"
           >
-            ← Low Risk if Wrong ↓
+            ← Low Risk if Wrong
           </text>
 
           {/* X-axis labels - closer to matrix */}
