@@ -309,7 +309,7 @@ Time: ${selectedAssumption.experiment.time}`;
 
                     return (
                       <g style={{ zIndex: 1000 }}>
-                        <foreignObject x={tooltipPos.x} y={tooltipPos.y} width="320" height="180">
+                        <foreignObject x={tooltipPos.x} y={tooltipPos.y} width="320" height="220">
                           <div
                             className="rounded-lg p-4 border border-gray-200 animate-fade-in"
                             style={{
