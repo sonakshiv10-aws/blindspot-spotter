@@ -307,8 +307,8 @@ const Index = () => {
 
       {/* Main Section - 85% */}
       <main className="h-[85vh] flex flex-col lg:flex-row">
-        {/* Left Panel - Input */}
-        <div className="w-full lg:w-[40%] p-8 lg:p-12 flex flex-col border-r border-border overflow-y-auto">
+        {/* Left Panel - Input (40% on desktop, 45% on tablet) */}
+        <div className="w-full md:w-[45%] lg:w-[40%] p-8 lg:p-12 flex flex-col border-r border-border overflow-y-auto max-w-[500px]">
           <h2 className="text-2xl lg:text-3xl font-bold mb-6">What Are You Building?</h2>
           
           <Textarea
@@ -344,8 +344,8 @@ const Index = () => {
           </p>
         </div>
 
-        {/* Right Panel - Matrix/Results */}
-        <div className="w-full lg:w-[60%] p-8 lg:p-12 flex flex-col items-center justify-center bg-secondary/30 overflow-y-auto">
+        {/* Right Panel - Matrix/Results (60% on desktop, 55% on tablet) */}
+        <div className="w-full md:w-[55%] lg:w-[60%] p-6 md:p-8 lg:p-12 flex flex-col items-center justify-center bg-secondary/30 overflow-y-auto">
           {!isLoading && !showResults && (
             <div className="w-full max-w-2xl">
               <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-border">
@@ -375,7 +375,7 @@ const Index = () => {
           )}
 
           {showResults && !isLoading && analysisData && (
-            <div className="w-full max-w-2xl space-y-6 animate-fade-in">
+            <div className="w-full max-w-4xl space-y-6 animate-fade-in">
               {/* First Principles Insight */}
               <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg">
                 <p className="text-sm font-semibold text-blue-900 mb-1">💡 First Principles Insight</p>
