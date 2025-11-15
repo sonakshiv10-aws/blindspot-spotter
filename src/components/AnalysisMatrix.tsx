@@ -27,11 +27,11 @@ const AnalysisMatrix = ({ assumptions }: AnalysisMatrixProps) => {
   const [selectedAssumption, setSelectedAssumption] = useState<Assumption | null>(null);
   const [copied, setCopied] = useState(false);
 
-  // Map risk (1-10) to Y position (400 to 100, inverted because SVG Y goes down) - adjusted for new viewBox
-  const getRiskY = (risk: number) => 400 - ((risk - 1) / 9) * 300;
+  // Map risk (1-10) to Y position (450 to 150, inverted because SVG Y goes down) - adjusted for new viewBox
+  const getRiskY = (risk: number) => 450 - ((risk - 1) / 9) * 300;
   
-  // Map testability (1-10) to X position (100 to 400) - adjusted for new viewBox
-  const getTestabilityX = (testability: number) => 100 + ((testability - 1) / 9) * 300;
+  // Map testability (1-10) to X position (200 to 500) - adjusted for new viewBox
+  const getTestabilityX = (testability: number) => 200 + ((testability - 1) / 9) * 300;
   
   // Smart truncate text keeping important words
   const truncate = (text: string, maxLength: number = 25) => {
@@ -72,7 +72,7 @@ const AnalysisMatrix = ({ assumptions }: AnalysisMatrixProps) => {
     return positions[index % 4];
   };
 
-  // Smart tooltip positioning to avoid cutoff
+  // Smart tooltip positioning to avoid cutoff - adjusted for new viewBox
   const getTooltipPosition = (x: number, y: number) => {
     const tooltipWidth = 240;
     const tooltipHeight = 130;
@@ -81,23 +81,23 @@ const AnalysisMatrix = ({ assumptions }: AnalysisMatrixProps) => {
     let tooltipX = x - tooltipWidth / 2;
     let tooltipY = y - tooltipHeight - 10; // Default: above dot
     
-    // Check top boundary
-    if (y < tooltipHeight + padding) {
+    // Check top boundary - adjusted for new viewBox
+    if (y < 150 + tooltipHeight + padding) {
       tooltipY = y + 15; // Show below dot
     }
     
-    // Check right boundary
-    if (x + tooltipWidth / 2 > 385) {
-      tooltipX = 385 - tooltipWidth - padding;
+    // Check right boundary - adjusted for new viewBox
+    if (x + tooltipWidth / 2 > 500 - padding) {
+      tooltipX = 500 - tooltipWidth - padding;
     }
     
-    // Check left boundary
-    if (x - tooltipWidth / 2 < 15) {
-      tooltipX = 15 + padding;
+    // Check left boundary - adjusted for new viewBox
+    if (x - tooltipWidth / 2 < 200) {
+      tooltipX = 200 + padding;
     }
     
-    // Check bottom boundary
-    if (y > 285) {
+    // Check bottom boundary - adjusted for new viewBox
+    if (y > 450 - tooltipHeight - padding) {
       tooltipY = y - tooltipHeight - 10; // Show above dot
     }
     
@@ -138,56 +138,70 @@ Time: ${selectedAssumption.experiment.time}`;
   return (
     <>
       <div className="relative w-full h-full">
-        <svg viewBox="0 0 500 500" className="w-full h-full" style={{ overflow: "visible" }}>
-          {/* Background - adjusted for new viewBox */}
-          <rect x="50" y="50" width="400" height="400" fill="#FAFAFA" rx="8" />
+        <svg viewBox="0 0 600 600" className="w-full h-full" style={{ overflow: "visible" }}>
+          {/* Background - adjusted for new viewBox with more margin */}
+          <rect x="150" y="100" width="400" height="400" fill="#FAFAFA" rx="8" />
           
           {/* Test Now quadrant highlight (top-right) */}
-          <rect x="250" y="100" width="150" height="150" fill="#10B981" opacity="0.05" rx="4" />
-          <rect x="250" y="100" width="150" height="150" fill="none" stroke="#10B981" strokeWidth="2" opacity="0.3" rx="4" />
+          <rect x="350" y="150" width="150" height="150" fill="#10B981" opacity="0.05" rx="4" />
+          <rect x="350" y="150" width="150" height="150" fill="none" stroke="#10B981" strokeWidth="2" opacity="0.3" rx="4" />
           
           {/* Grid lines */}
-          <line x1="250" y1="100" x2="250" y2="400" stroke="#D1D5DB" strokeWidth="2" />
-          <line x1="100" y1="250" x2="400" y2="250" stroke="#D1D5DB" strokeWidth="2" />
+          <line x1="350" y1="150" x2="350" y2="450" stroke="#D1D5DB" strokeWidth="2" />
+          <line x1="200" y1="300" x2="500" y2="300" stroke="#D1D5DB" strokeWidth="2" />
           
           {/* Axis labels */}
-          {/* Y-axis labels */}
-          <text x="80" y="105" textAnchor="middle" fontSize="14" fontWeight="600" fill="#374151">
-            High Risk if Wrong ↑
+          {/* Y-axis labels - VERTICAL */}
+          <text 
+            x="120" 
+            y="300" 
+            textAnchor="middle" 
+            fontSize="14" 
+            fontWeight="600" 
+            fill="#374151"
+            transform="rotate(-90 120 300)"
+          >
+            ↑ High Risk if Wrong
           </text>
-          <text x="80" y="405" textAnchor="middle" fontSize="14" fontWeight="500" fill="#9CA3AF">
-            Low Risk if Wrong
+          <text 
+            x="120" 
+            y="300" 
+            textAnchor="middle" 
+            fontSize="14" 
+            fontWeight="600" 
+            fill="#374151"
+            transform="rotate(-90 120 300)"
+            dy="150"
+          >
+            Low Risk if Wrong ↓
           </text>
           
           {/* X-axis labels */}
-          <text x="105" y="430" textAnchor="start" fontSize="14" fontWeight="600" fill="#374151">
-            Hard to Test
+          <text x="200" y="480" textAnchor="start" fontSize="14" fontWeight="600" fill="#374151">
+            ← Hard to Test
           </text>
-          <text x="395" y="430" textAnchor="end" fontSize="14" fontWeight="600" fill="#374151">
+          <text x="500" y="480" textAnchor="end" fontSize="14" fontWeight="600" fill="#374151">
             Easy to Test →
           </text>
           
-          {/* Quadrant labels - OUTSIDE matrix */}
+          {/* Quadrant labels - ALL OUTSIDE matrix */}
           {/* TOP-LEFT: Critical Risk - RED */}
-          <text x="100" y="80" textAnchor="start" fontSize="16" fontWeight="600" fill="#EF4444">
+          <text x="200" y="75" textAnchor="start" fontSize="18" fontWeight="700" fill="#EF4444">
             Critical Risk
           </text>
           
           {/* TOP-RIGHT: Test Now - GREEN */}
-          <text x="400" y="80" textAnchor="end" fontSize="16" fontWeight="600" fill="#10B981">
+          <text x="500" y="75" textAnchor="end" fontSize="18" fontWeight="700" fill="#10B981">
             Test Now
-          </text>
-          <text x="400" y="95" textAnchor="end" fontSize="12" fontWeight="500" fill="#10B981" opacity="0.8">
-            Priority #1
           </text>
           
           {/* BOTTOM-LEFT: Defer / Monitor - BLUE */}
-          <text x="100" y="470" textAnchor="start" fontSize="16" fontWeight="600" fill="#3B82F6">
+          <text x="200" y="530" textAnchor="start" fontSize="18" fontWeight="700" fill="#3B82F6">
             Defer / Monitor
           </text>
           
           {/* BOTTOM-RIGHT: Quick Wins - YELLOW */}
-          <text x="400" y="470" textAnchor="end" fontSize="16" fontWeight="600" fill="#F59E0B">
+          <text x="500" y="530" textAnchor="end" fontSize="18" fontWeight="700" fill="#F59E0B">
             Quick Wins
           </text>
           
@@ -243,21 +257,22 @@ Time: ${selectedAssumption.experiment.time}`;
                   style={{ transition: "all 0.2s ease" }}
                 />
                 
-                {/* Label with white background */}
+                {/* Label with white background and shadow */}
                 <rect
                   x={labelPos.anchor === "start" ? x + labelPos.dx : x + labelPos.dx - 80}
                   y={y + labelPos.dy - 10}
                   width="80"
                   height="18"
                   fill="white"
-                  opacity="0.9"
+                  opacity="0.95"
                   rx="3"
+                  filter="drop-shadow(0 1px 3px rgba(0,0,0,0.1))"
                 />
                 <text 
                   x={x + labelPos.dx} 
                   y={y + labelPos.dy} 
                   textAnchor={labelPos.anchor as any}
-                  fontSize="8" 
+                  fontSize="9" 
                   fill="#374151" 
                   fontWeight="600"
                   style={{ pointerEvents: "none" }}
@@ -298,7 +313,7 @@ Time: ${selectedAssumption.experiment.time}`;
           })}
           
           {/* Border - adjusted for new viewBox */}
-          <rect x="50" y="50" width="400" height="400" fill="none" stroke="#D1D5DB" strokeWidth="2" rx="8" />
+          <rect x="150" y="100" width="400" height="400" fill="none" stroke="#D1D5DB" strokeWidth="2" rx="8" />
         </svg>
       </div>
 
