@@ -28,17 +28,17 @@ const AnalysisMatrix = ({ assumptions }: AnalysisMatrixProps) => {
   const [copied, setCopied] = useState(false);
 
   // Map risk (1-10) to Y position (inverted because SVG Y goes down)
-  // Keep dots 20px away from borders for 700x700 matrix
+  // Keep dots 20px away from borders for 650x650 matrix
   const getRiskY = (risk: number) => {
-    const y = 680 - ((risk - 1) / 9) * 640;
-    return Math.max(40, Math.min(680, y));
+    const y = 630 - ((risk - 1) / 9) * 590;
+    return Math.max(40, Math.min(630, y));
   };
   
   // Map testability (1-10) to X position
-  // Keep dots 20px away from borders for 700x700 matrix
+  // Keep dots 20px away from borders for 650x650 matrix
   const getTestabilityX = (testability: number) => {
-    const x = 40 + ((testability - 1) / 9) * 640;
-    return Math.max(40, Math.min(680, x));
+    const x = 40 + ((testability - 1) / 9) * 590;
+    return Math.max(40, Math.min(630, x));
   };
   
   // Smart truncate text keeping important words (max 20 chars for matrix labels)
@@ -90,17 +90,17 @@ const AnalysisMatrix = ({ assumptions }: AnalysisMatrixProps) => {
     let tooltipY = y - tooltipHeight - 15; // Default: above dot
     
     // If in top half, show below
-    if (y < 350) {
+    if (y < 325) {
       tooltipY = y + 15;
     }
     
     // If in right half, show to left
-    if (x > 450) {
+    if (x > 425) {
       tooltipX = x - tooltipWidth - 15;
     }
     
     // If in left half, show to right
-    if (x < 350 && tooltipX < padding) {
+    if (x < 325 && tooltipX < padding) {
       tooltipX = x + 15;
     }
     
@@ -144,70 +144,70 @@ Time: ${selectedAssumption.experiment.time}`;
   
   return (
     <>
-      <div className="relative flex justify-center items-center" style={{ width: "900px", height: "800px" }}>
-        <svg width="900" height="800" viewBox="0 0 900 800" style={{ overflow: "visible" }}>
+      <div className="relative flex justify-center items-center" style={{ width: "850px", height: "780px" }}>
+        <svg width="850" height="780" viewBox="0 0 850 780" style={{ overflow: "visible" }}>
           {/* Background */}
-          <rect x="100" y="50" width="700" height="700" fill="#FAFAFA" rx="8" />
+          <rect x="100" y="50" width="650" height="650" fill="#FAFAFA" rx="8" />
           
           {/* Test Now quadrant highlight (top-right) */}
-          <rect x="450" y="50" width="350" height="350" fill="#10B981" opacity="0.05" rx="4" />
-          <rect x="450" y="50" width="350" height="350" fill="none" stroke="#10B981" strokeWidth="2" opacity="0.3" rx="4" />
+          <rect x="425" y="50" width="325" height="325" fill="#10B981" opacity="0.05" rx="4" />
+          <rect x="425" y="50" width="325" height="325" fill="none" stroke="#10B981" strokeWidth="2" opacity="0.3" rx="4" />
           
           {/* Grid lines */}
-          <line x1="450" y1="50" x2="450" y2="750" stroke="#D1D5DB" strokeWidth="2" />
-          <line x1="100" y1="400" x2="800" y2="400" stroke="#D1D5DB" strokeWidth="2" />
+          <line x1="425" y1="50" x2="425" y2="700" stroke="#D1D5DB" strokeWidth="2" />
+          <line x1="100" y1="375" x2="750" y2="375" stroke="#D1D5DB" strokeWidth="2" />
           
           {/* Axis labels */}
           {/* Y-axis labels - VERTICAL (outside matrix on left) */}
           <text 
             x="50" 
-            y="225" 
+            y="212" 
             textAnchor="middle" 
             fontSize="15" 
             fontWeight="500" 
             fill="#374151"
-            transform="rotate(-90 50 225)"
+            transform="rotate(-90 50 212)"
           >
             ↑ High Risk if Wrong
           </text>
           <text 
             x="50" 
-            y="575" 
+            y="537" 
             textAnchor="middle" 
             fontSize="15" 
             fontWeight="500" 
             fill="#374151"
-            transform="rotate(-90 50 575)"
+            transform="rotate(-90 50 537)"
           >
             Low Risk if Wrong ↓
           </text>
           
-          {/* X-axis labels */}
-          <text x="100" y="780" textAnchor="start" fontSize="15" fontWeight="500" fill="#374151">
-            ← Hard to Test
+          {/* X-axis labels - closer to matrix */}
+          <text x="100" y="725" textAnchor="start" fontSize="15" fontWeight="500" fill="#374151">
+            Hard to Test ←
           </text>
-          <text x="800" y="780" textAnchor="end" fontSize="15" fontWeight="500" fill="#374151">
+          <text x="750" y="725" textAnchor="end" fontSize="15" fontWeight="500" fill="#374151">
             Easy to Test →
           </text>
           
-          {/* Quadrant labels - ALL OUTSIDE matrix */}
+          {/* Quadrant labels - ALL OUTSIDE matrix with more spacing from X-axis */}
           {/* TOP-LEFT: Critical Risk - RED */}
           <text x="100" y="30" textAnchor="start" fontSize="20" fontWeight="700" fill="#EF4444">
             Critical Risk
           </text>
           
           {/* TOP-RIGHT: Test Now - GREEN */}
-          <text x="800" y="30" textAnchor="end" fontSize="20" fontWeight="700" fill="#10B981">
+          <text x="750" y="30" textAnchor="end" fontSize="20" fontWeight="700" fill="#10B981">
             Test Now
           </text>
           
           {/* BOTTOM-LEFT: Defer / Monitor - BLUE */}
-          <text x="100" y="790" textAnchor="start" fontSize="20" fontWeight="700" fill="#3B82F6">
+          <text x="100" y="770" textAnchor="start" fontSize="20" fontWeight="700" fill="#3B82F6">
             Defer / Monitor
           </text>
           
           {/* BOTTOM-RIGHT: Quick Wins - YELLOW */}
-          <text x="800" y="790" textAnchor="end" fontSize="20" fontWeight="700" fill="#F59E0B">
+          <text x="750" y="770" textAnchor="end" fontSize="20" fontWeight="700" fill="#F59E0B">
             Quick Wins
           </text>
           
@@ -337,7 +337,7 @@ Time: ${selectedAssumption.experiment.time}`;
           })}
           
           {/* Border */}
-          <rect x="100" y="50" width="700" height="700" fill="none" stroke="#D1D5DB" strokeWidth="2" rx="8" />
+          <rect x="100" y="50" width="650" height="650" fill="none" stroke="#D1D5DB" strokeWidth="2" rx="8" />
         </svg>
       </div>
 

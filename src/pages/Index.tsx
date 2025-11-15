@@ -306,9 +306,9 @@ const Index = () => {
       </Dialog>
 
       {/* Main Section - 85% */}
-      <main className="h-[85vh] flex flex-col lg:flex-row">
-        {/* Left Panel - Fixed 400px width on desktop, full width on mobile */}
-        <div className="w-full lg:w-[400px] p-10 flex flex-col border-b lg:border-b-0 lg:border-r border-border overflow-y-auto">
+      <main className="h-[85vh] flex flex-col lg:flex-row justify-center">
+        {/* Left Panel - Fixed 420px width on desktop, full width on mobile */}
+        <div className="w-full lg:w-[420px] p-10 flex flex-col border-b lg:border-b-0 lg:border-r border-border overflow-y-auto">
           <h2 className="text-2xl font-bold mb-6">What Are You Building?</h2>
           
           <Textarea
@@ -345,7 +345,7 @@ const Index = () => {
         </div>
 
         {/* Right Panel - Flexible width on desktop, full width on mobile */}
-        <div className="flex-1 w-full lg:min-w-[1000px] overflow-y-auto">
+        <div className="flex-1 w-full lg:max-w-[950px] overflow-y-auto">
           {!showResults && !isLoading && (
             <div className="h-full flex items-center justify-center p-8">
               <MatrixPreview />
