@@ -306,9 +306,9 @@ const Index = () => {
       </Dialog>
 
       {/* Main Section - 85% */}
-      <main className="h-[85vh] flex">
-        {/* Left Panel - Fixed 400px width */}
-        <div className="w-[400px] p-10 flex flex-col border-r border-border overflow-y-auto">
+      <main className="h-[85vh] flex flex-col lg:flex-row">
+        {/* Left Panel - Fixed 400px width on desktop, full width on mobile */}
+        <div className="w-full lg:w-[400px] p-10 flex flex-col border-b lg:border-b-0 lg:border-r border-border overflow-y-auto">
           <h2 className="text-2xl font-bold mb-6">What Are You Building?</h2>
           
           <Textarea
@@ -344,8 +344,8 @@ const Index = () => {
           </p>
         </div>
 
-        {/* Right Panel - Flexible width, min 1000px */}
-        <div className="flex-1 min-w-[1000px] overflow-y-auto">
+        {/* Right Panel - Flexible width on desktop, full width on mobile */}
+        <div className="flex-1 w-full lg:min-w-[1000px] overflow-y-auto">
           {!showResults && !isLoading && (
             <div className="h-full flex items-center justify-center p-8">
               <MatrixPreview />
@@ -370,7 +370,7 @@ const Index = () => {
           )}
 
           {showResults && analysisData && (
-            <div className="p-10 space-y-5">
+            <div className="p-6 lg:p-10 space-y-6">
               {/* Blind Spots Badge */}
               {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length > 0 && (
                 <div className="inline-flex items-center gap-2 bg-red-50 text-red-700 px-4 py-2 rounded-full font-semibold text-sm shadow-sm">
@@ -391,13 +391,13 @@ const Index = () => {
                 </div>
               )}
 
-              {/* Analysis Matrix - 800x800 */}
-              <div className="bg-white rounded-xl shadow-lg p-8">
+              {/* Analysis Matrix - 700x700 */}
+              <div className="bg-white rounded-xl shadow-lg p-4 lg:p-8 overflow-x-auto">
                 <AnalysisMatrix assumptions={analysisData.assumptions} />
               </div>
 
               {/* Analysis Complete Message */}
-              <div className="text-center text-slate-600 text-sm">
+              <div className="text-center text-slate-600 text-sm pt-2 pb-4">
                 Analysis complete • Using mock data - real API will be connected via backend
               </div>
             </div>
