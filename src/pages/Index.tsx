@@ -307,8 +307,8 @@ const Index = () => {
 
       {/* Main Section - 85% */}
       <main className="h-[85vh] flex">
-        {/* Left Panel - Fixed 380px width */}
-        <div className="w-[380px] p-10 flex flex-col border-r border-border overflow-y-auto">
+        {/* Left Panel - Fixed 400px width */}
+        <div className="w-[400px] p-10 flex flex-col border-r border-border overflow-y-auto">
           <h2 className="text-2xl font-bold mb-6">What Are You Building?</h2>
           
           <Textarea
