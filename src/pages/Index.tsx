@@ -306,16 +306,16 @@ const Index = () => {
       </Dialog>
 
       {/* Main Section - 85% */}
-      <main className="h-[85vh] flex flex-col lg:flex-row">
-        {/* Left Panel - Input (40% on desktop, 45% on tablet) */}
-        <div className="w-full md:w-[45%] lg:w-[40%] p-8 lg:p-12 flex flex-col border-r border-border overflow-y-auto max-w-[500px]">
-          <h2 className="text-2xl lg:text-3xl font-bold mb-6">What Are You Building?</h2>
+      <main className="h-[85vh] flex">
+        {/* Left Panel - Fixed 380px width */}
+        <div className="w-[380px] p-10 flex flex-col border-r border-border overflow-y-auto">
+          <h2 className="text-2xl font-bold mb-6">What Are You Building?</h2>
           
           <Textarea
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             placeholder="e.g., A valet parking app that lets you park anywhere in SF&#10;e.g., A dark mode feature for our fitness app&#10;e.g., An AI-powered design system for enterprise teams"
-            className="flex-1 min-h-[200px] text-base lg:text-lg mb-4 resize-none"
+            className="flex-1 min-h-[200px] text-base mb-4 resize-none"
             maxLength={500}
           />
           
@@ -344,77 +344,61 @@ const Index = () => {
           </p>
         </div>
 
-        {/* Right Panel - Matrix/Results (60% on desktop, 55% on tablet) */}
-        <div className="w-full md:w-[55%] lg:w-[60%] p-6 md:p-8 lg:p-12 flex flex-col items-center justify-center bg-secondary/30 overflow-y-auto">
-          {!isLoading && !showResults && (
-            <div className="w-full max-w-2xl">
-              <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-border">
-                <div className="aspect-square mb-6">
-                  <MatrixPreview />
-                </div>
-                <p className="text-base text-muted-foreground text-center font-medium">
-                  Example: Valet parking app analysis
-                </p>
-              </div>
+        {/* Right Panel - Flexible width, min 1000px */}
+        <div className="flex-1 min-w-[1000px] overflow-y-auto">
+          {!showResults && !isLoading && (
+            <div className="h-full flex items-center justify-center p-8">
+              <MatrixPreview />
             </div>
           )}
 
           {isLoading && (
-            <div className="text-center">
-              <div className="mb-8">
-                <div className="w-24 h-24 mx-auto relative">
-                  <div className="absolute inset-0 bg-primary rounded-full animate-ping opacity-75"></div>
-                  <div className="absolute inset-0 bg-primary rounded-full animate-pulse"></div>
+            <div className="h-full flex flex-col items-center justify-center p-8">
+              <div className="w-full max-w-md space-y-8 text-center">
+                <div className="relative mx-auto w-32 h-32">
+                  <div className="absolute inset-0 border-4 border-primary/30 rounded-full"></div>
+                  <div className="absolute inset-0 border-4 border-transparent border-t-primary rounded-full animate-spin"></div>
+                </div>
+                <div className="space-y-3">
+                  <p className="text-xl font-medium text-foreground animate-pulse">
+                    {currentLoadingMessage}
+                  </p>
+                  <p className="text-muted-foreground">This usually takes 10-30 seconds</p>
                 </div>
               </div>
-              
-              <p className="text-2xl font-semibold text-primary animate-fade-in">
-                {currentLoadingMessage}
-              </p>
             </div>
           )}
 
-          {showResults && !isLoading && analysisData && (
-            <div className="w-full max-w-4xl space-y-6 animate-fade-in">
-              {/* First Principles Insight */}
-              <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg">
-                <p className="text-sm font-semibold text-blue-900 mb-1">💡 First Principles Insight</p>
-                <p className="text-sm text-blue-800">{analysisData.firstPrinciplesInsight}</p>
-              </div>
-              
-              {/* Analysis Matrix */}
-              <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-border">
-                {/* Blind Spots Badge */}
-                {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length > 0 && (
-                  <div className="mb-4 text-center">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 bg-red-50 text-red-700 rounded-full text-sm font-medium">
-                      🚨 {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length} Blind Spots Found
-                    </span>
-                  </div>
-                )}
-                <div className="aspect-square">
-                  <AnalysisMatrix assumptions={analysisData.assumptions} />
+          {showResults && analysisData && (
+            <div className="p-10 space-y-5">
+              {/* Blind Spots Badge */}
+              {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length > 0 && (
+                <div className="inline-flex items-center gap-2 bg-red-50 text-red-700 px-4 py-2 rounded-full font-semibold text-sm shadow-sm">
+                  🚨 {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length} Hidden Blind Spot{analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length > 1 ? 's' : ''} Found
                 </div>
-                <p className="text-xs text-muted-foreground text-center mt-4">
-                  Using mock data - real API will be connected via backend
-                </p>
+              )}
+
+              {/* First Principles Insight */}
+              {analysisData.firstPrinciplesInsight && (
+                <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6 shadow-sm">
+                  <h3 className="text-lg font-semibold text-purple-900 mb-2 flex items-center gap-2">
+                    <Sparkles className="w-5 h-5" />
+                    First Principles Insight
+                  </h3>
+                  <p className="text-slate-700 leading-relaxed">
+                    {analysisData.firstPrinciplesInsight}
+                  </p>
+                </div>
+              )}
+
+              {/* Analysis Matrix - 800x800 */}
+              <div className="bg-white rounded-xl shadow-lg p-8">
+                <AnalysisMatrix assumptions={analysisData.assumptions} />
               </div>
-            </div>
-          )}
-          
-          {error && !isLoading && (
-            <div className="w-full max-w-2xl">
-              <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
-                <p className="text-sm font-semibold text-red-900 mb-1">Error</p>
-                <p className="text-sm text-red-800">{error}</p>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={handleAnalyze}
-                  className="mt-3"
-                >
-                  Retry
-                </Button>
+
+              {/* Analysis Complete Message */}
+              <div className="text-center text-slate-600 text-sm">
+                Analysis complete • Using mock data - real API will be connected via backend
               </div>
             </div>
           )}
