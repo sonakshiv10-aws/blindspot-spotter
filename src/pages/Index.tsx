@@ -347,8 +347,34 @@ const Index = () => {
         {/* Right Panel - Flexible width on desktop, full width on mobile */}
         <div className="flex-1 w-full lg:min-w-[950px] overflow-y-auto flex flex-col items-center">
           {!showResults && !isLoading && (
-            <div className="h-full flex items-center justify-center p-8 w-full">
-              <MatrixPreview />
+            <div className="h-full flex items-center justify-center p-6 lg:p-10 w-full">
+              <div className="space-y-6 w-full max-w-[1100px]">
+                {/* Blind Spots Badge */}
+                <div className="inline-flex items-center gap-2 bg-red-50 text-red-700 px-4 py-2 rounded-full font-semibold text-sm shadow-sm">
+                  🚨 3 Hidden Blind Spots Found
+                </div>
+
+                {/* First Principles Insight */}
+                <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6 shadow-sm">
+                  <h3 className="text-lg font-semibold text-purple-900 mb-2 flex items-center gap-2">
+                    <Sparkles className="w-5 h-5" />
+                    First Principles Insight
+                  </h3>
+                  <p className="text-slate-700 leading-relaxed">
+                    {MOCK_ANALYSIS.firstPrinciplesInsight}
+                  </p>
+                </div>
+
+                {/* Analysis Matrix - Example */}
+                <div className="bg-white rounded-xl shadow-lg p-4 lg:p-8 overflow-x-auto">
+                  <AnalysisMatrix assumptions={MOCK_ANALYSIS.assumptions} />
+                </div>
+
+                {/* Example Label */}
+                <div className="text-center text-slate-500 text-sm pt-2 pb-4">
+                  Example: Valet parking app analysis
+                </div>
+              </div>
             </div>
           )}
 
