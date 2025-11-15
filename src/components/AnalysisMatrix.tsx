@@ -96,33 +96,52 @@ const AnalysisMatrix = ({ assumptions }: AnalysisMatrixProps) => {
     return positions[index % 4];
   };
 
-  // Smart tooltip positioning to avoid cutoff
-  const getTooltipPosition = (x: number, y: number) => {
+  // Smart tooltip positioning to avoid cutoff and overlaps
+  const getTooltipPosition = (x: number, y: number, currentAssumption: Assumption) => {
     const tooltipWidth = 320;
-    const tooltipHeight = 180;
+    const tooltipHeight = 220;
     const padding = 20;
+    const minDotDistance = 100; // Minimum distance from other dots
+    
+    // Check if tooltip position overlaps with any dot
+    const hasOverlap = (tooltipX: number, tooltipY: number) => {
+      return assumptions.some(assumption => {
+        if (assumption.id === currentAssumption.id) return false;
+        
+        const dotX = getTestabilityX(assumption.testability) + 100;
+        const dotY = getRiskY(assumption.risk) + 50;
+        
+        // Check if dot is within tooltip bounds plus margin
+        const overlapX = dotX > tooltipX - 20 && dotX < tooltipX + tooltipWidth + 20;
+        const overlapY = dotY > tooltipY - 20 && dotY < tooltipY + tooltipHeight + 20;
+        
+        return overlapX && overlapY;
+      });
+    };
 
-    let tooltipX = x - tooltipWidth / 2;
-    let tooltipY = y - tooltipHeight - 15; // Default: above dot
+    // Try positions in order: above, below, right, left
+    const positions = [
+      { x: x - tooltipWidth / 2, y: y - tooltipHeight - 15 }, // above
+      { x: x - tooltipWidth / 2, y: y + 15 }, // below
+      { x: x + 15, y: y - tooltipHeight / 2 }, // right
+      { x: x - tooltipWidth - 15, y: y - tooltipHeight / 2 }, // left
+    ];
 
-    // If in top half, show below
-    if (y < 325) {
-      tooltipY = y + 15;
-    }
-
-    // If in right half, show to left
-    if (x > 425) {
-      tooltipX = x - tooltipWidth - 15;
-    }
-
-    // If in left half, show to right
-    if (x < 325 && tooltipX < padding) {
-      tooltipX = x + 15;
+    // Find first position without overlap
+    let tooltipX = positions[0].x;
+    let tooltipY = positions[0].y;
+    
+    for (const pos of positions) {
+      if (!hasOverlap(pos.x, pos.y)) {
+        tooltipX = pos.x;
+        tooltipY = pos.y;
+        break;
+      }
     }
 
     // Ensure within bounds
-    tooltipX = Math.max(padding, Math.min(900 - tooltipWidth - padding, tooltipX));
-    tooltipY = Math.max(padding, Math.min(800 - tooltipHeight - padding, tooltipY));
+    tooltipX = Math.max(padding, Math.min(850 - tooltipWidth - padding, tooltipX));
+    tooltipY = Math.max(padding, Math.min(780 - tooltipHeight - padding, tooltipY));
 
     return { x: tooltipX, y: tooltipY };
   };
@@ -303,7 +322,7 @@ Time: ${selectedAssumption.experiment.time}`;
                 {/* Hover tooltip with smart positioning */}
                 {isHovered &&
                   (() => {
-                    const tooltipPos = getTooltipPosition(x, y);
+                    const tooltipPos = getTooltipPosition(x, y, assumption);
                     const riskInfo = getRiskInfo(assumption.risk);
                     const testInfo = getTestabilityInfo(assumption.testability);
 
