@@ -178,21 +178,8 @@ Time: ${selectedAssumption.experiment.time}`;
 
   return (
     <>
-      {/* Invisible blocking overlay when tooltip is open */}
-      {lockedTooltipId && (
-        <div
-          className="fixed inset-0"
-          style={{ 
-            zIndex: 9999,
-            background: 'transparent',
-            cursor: 'default',
-          }}
-          onClick={() => setLockedTooltipId(null)}
-        />
-      )}
-      
       <div className="relative flex justify-center items-center" style={{ width: "850px", height: "780px" }}>
-        <svg width="850" height="780" viewBox="0 0 850 780" style={{ overflow: "visible" }}>
+        <svg width="850" height="780" viewBox="0 0 850 780" style={{ overflow: "visible", position: "relative", zIndex: 10000 }}>
           {/* Background */}
           <rect x="100" y="50" width="650" height="650" fill="#FAFAFA" rx="8" />
 
@@ -393,6 +380,20 @@ Time: ${selectedAssumption.experiment.time}`;
           <rect x="100" y="50" width="650" height="650" fill="none" stroke="#D1D5DB" strokeWidth="2" rx="8" />
         </svg>
       </div>
+
+      {/* Invisible blocking overlay when tooltip is open */}
+      {lockedTooltipId && (
+        <div
+          className="fixed inset-0"
+          style={{ 
+            zIndex: 9998,
+            background: 'transparent',
+            cursor: 'default',
+            pointerEvents: 'auto',
+          }}
+          onClick={() => setLockedTooltipId(null)}
+        />
+      )}
 
       {/* Detail Panel */}
       <Sheet open={selectedAssumption !== null} onOpenChange={(open) => !open && setSelectedAssumption(null)}>
