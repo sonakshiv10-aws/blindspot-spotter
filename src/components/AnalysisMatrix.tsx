@@ -99,30 +99,34 @@ const AnalysisMatrix = ({ assumptions }: AnalysisMatrixProps) => {
   // Smart tooltip positioning to avoid cutoff
   const getTooltipPosition = (x: number, y: number) => {
     const tooltipWidth = 320;
-    const tooltipHeight = 180;
+    const tooltipHeight = 220;
+    const matrixLeft = 100;
+    const matrixRight = 750;
+    const matrixTop = 50;
+    const matrixBottom = 700;
     const padding = 20;
 
     let tooltipX = x - tooltipWidth / 2;
     let tooltipY = y - tooltipHeight - 15; // Default: above dot
 
     // If in top half, show below
-    if (y < 325) {
+    if (y < 375) {
       tooltipY = y + 15;
     }
 
-    // If in right half, show to left
-    if (x > 425) {
-      tooltipX = x - tooltipWidth - 15;
-    }
-
-    // If in left half, show to right
-    if (x < 325 && tooltipX < padding) {
+    // If too close to left edge of matrix, show to right
+    if (tooltipX < matrixLeft + padding) {
       tooltipX = x + 15;
     }
 
-    // Ensure within bounds
-    tooltipX = Math.max(padding, Math.min(900 - tooltipWidth - padding, tooltipX));
-    tooltipY = Math.max(padding, Math.min(800 - tooltipHeight - padding, tooltipY));
+    // If too close to right edge, show to left
+    if (tooltipX + tooltipWidth > matrixRight - padding) {
+      tooltipX = x - tooltipWidth - 15;
+    }
+
+    // Ensure within SVG bounds
+    tooltipX = Math.max(matrixLeft + padding, Math.min(matrixRight - tooltipWidth - padding, tooltipX));
+    tooltipY = Math.max(matrixTop + padding, Math.min(matrixBottom - tooltipHeight - padding, tooltipY));
 
     return { x: tooltipX, y: tooltipY };
   };
