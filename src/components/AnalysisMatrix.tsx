@@ -178,6 +178,15 @@ Time: ${selectedAssumption.experiment.time}`;
 
   return (
     <>
+      {/* Backdrop overlay when tooltip is locked */}
+      {lockedTooltipId && (
+        <div
+          className="fixed inset-0 bg-black/5 backdrop-blur-[1px] transition-opacity duration-200"
+          style={{ zIndex: 9999 }}
+          onClick={() => setLockedTooltipId(null)}
+        />
+      )}
+      
       <div className="relative flex justify-center items-center" style={{ width: "850px", height: "780px" }}>
         <svg width="850" height="780" viewBox="0 0 850 780" style={{ overflow: "visible" }}>
           {/* Background */}
@@ -330,13 +339,14 @@ Time: ${selectedAssumption.experiment.time}`;
                     const testInfo = getTestabilityInfo(assumption.testability);
 
                     return (
-                      <g style={{ zIndex: 1000 }}>
-                        <foreignObject x={tooltipPos.x} y={tooltipPos.y} width="320" height="220" style={{ pointerEvents: 'auto' }}>
+                      <g style={{ zIndex: 10000 }}>
+                        <foreignObject x={tooltipPos.x} y={tooltipPos.y} width="320" height="220" style={{ pointerEvents: 'auto', zIndex: 10000 }}>
                           <div
                             data-tooltip
                             className="rounded-lg p-4 border border-gray-200 animate-fade-in"
                             style={{
-                              zIndex: 9999,
+                              zIndex: 10000,
+                              position: 'relative',
                               backgroundColor: "#FFFFFF",
                               boxShadow: "0 10px 25px rgba(0,0,0,0.25)",
                               pointerEvents: 'auto',
