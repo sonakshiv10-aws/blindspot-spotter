@@ -178,15 +178,6 @@ Time: ${selectedAssumption.experiment.time}`;
 
   return (
     <>
-      {/* Backdrop overlay when tooltip is locked */}
-      {lockedTooltipId && (
-        <div
-          className="fixed inset-0 bg-black/5 backdrop-blur-[1px] transition-opacity duration-200"
-          style={{ zIndex: 9999 }}
-          onClick={() => setLockedTooltipId(null)}
-        />
-      )}
-      
       <div className="relative flex justify-center items-center" style={{ width: "850px", height: "780px" }}>
         <svg width="850" height="780" viewBox="0 0 850 780" style={{ overflow: "visible" }}>
           {/* Background */}
