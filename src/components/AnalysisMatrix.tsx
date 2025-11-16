@@ -347,13 +347,18 @@ Time: ${selectedAssumption.experiment.time}`;
                         <foreignObject x={tooltipPos.x} y={tooltipPos.y} width="320" height="220" style={{ pointerEvents: 'auto', zIndex: 10000 }}>
                           <div
                             data-tooltip
-                            className="rounded-lg p-4 border border-gray-200 animate-fade-in"
+                            className="rounded-lg p-4 border border-gray-200 animate-fade-in cursor-pointer hover:bg-gray-50 transition-colors"
                             style={{
                               zIndex: 10000,
                               position: 'relative',
                               backgroundColor: "#FFFFFF",
                               boxShadow: "0 10px 25px rgba(0,0,0,0.25)",
                               pointerEvents: 'auto',
+                            }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedAssumption(assumption);
+                              setLockedTooltipId(null);
                             }}
                           >
                             <div className="text-sm font-semibold text-gray-900 mb-3 leading-relaxed">
