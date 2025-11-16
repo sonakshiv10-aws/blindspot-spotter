@@ -24,6 +24,7 @@ interface AnalysisMatrixProps {
 
 const AnalysisMatrix = ({ assumptions }: AnalysisMatrixProps) => {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [lockedTooltipId, setLockedTooltipId] = useState<string | null>(null);
   const [selectedAssumption, setSelectedAssumption] = useState<Assumption | null>(null);
   const [copied, setCopied] = useState(false);
 
@@ -148,18 +149,31 @@ Time: ${selectedAssumption.experiment.time}`;
     setTimeout(() => setCopied(false), 2000);
   };
 
-  // Keyboard handler
+  // Keyboard and click handlers
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
       setSelectedAssumption(null);
       setHoveredId(null);
+      setLockedTooltipId(null);
     }
   };
 
-  // Add keyboard listener
+  const handleClickOutside = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    // Close tooltip if clicking outside of it
+    if (!target.closest('[data-tooltip]') && !target.closest('circle')) {
+      setLockedTooltipId(null);
+    }
+  };
+
+  // Add event listeners
   useState(() => {
     document.addEventListener("keydown", handleKeyDown as any);
-    return () => document.removeEventListener("keydown", handleKeyDown as any);
+    document.addEventListener("click", handleClickOutside as any);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown as any);
+      document.removeEventListener("click", handleClickOutside as any);
+    };
   });
 
   return (
@@ -247,7 +261,8 @@ Time: ${selectedAssumption.experiment.time}`;
             const y = getRiskY(assumption.risk) + 50; // Offset for viewBox
             const color = assumption.isHiddenBlindSpot ? "#EF4444" : "#10B981";
             const isHovered = hoveredId === assumption.id;
-            const isOtherHovered = hoveredId !== null && !isHovered;
+            const isTooltipVisible = lockedTooltipId === assumption.id;
+            const isOtherHovered = (hoveredId !== null && !isHovered) || (lockedTooltipId !== null && !isTooltipVisible);
             const labelPos = getLabelPosition(index, x, y);
 
             return (
@@ -258,7 +273,10 @@ Time: ${selectedAssumption.experiment.time}`;
                   transition: "opacity 0.3s ease, transform 0.2s ease",
                   cursor: "pointer",
                 }}
-                onMouseEnter={() => setHoveredId(assumption.id)}
+                onMouseEnter={() => {
+                  setHoveredId(assumption.id);
+                  setLockedTooltipId(assumption.id);
+                }}
                 onMouseLeave={() => setHoveredId(null)}
                 onClick={() => setSelectedAssumption(assumption)}
               >
@@ -304,8 +322,8 @@ Time: ${selectedAssumption.experiment.time}`;
                   {truncate(assumption.text, 20)}
                 </text>
 
-                {/* Hover tooltip with smart positioning */}
-                {isHovered &&
+                {/* Locked tooltip with smart positioning */}
+                {isTooltipVisible &&
                   (() => {
                     const tooltipPos = getTooltipPosition(x, y);
                     const riskInfo = getRiskInfo(assumption.risk);
@@ -315,11 +333,12 @@ Time: ${selectedAssumption.experiment.time}`;
                       <g style={{ zIndex: 1000 }}>
                         <foreignObject x={tooltipPos.x} y={tooltipPos.y} width="320" height="220" style={{ pointerEvents: 'auto' }}>
                           <div
+                            data-tooltip
                             className="rounded-lg p-4 border border-gray-200 animate-fade-in"
                             style={{
                               zIndex: 9999,
                               backgroundColor: "#FFFFFF",
-                              boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
+                              boxShadow: "0 10px 25px rgba(0,0,0,0.25)",
                               pointerEvents: 'auto',
                             }}
                           >
