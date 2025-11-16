@@ -178,6 +178,19 @@ Time: ${selectedAssumption.experiment.time}`;
 
   return (
     <>
+      {/* Invisible blocking overlay when tooltip is open */}
+      {lockedTooltipId && (
+        <div
+          className="fixed inset-0"
+          style={{ 
+            zIndex: 9999,
+            background: 'transparent',
+            cursor: 'default',
+          }}
+          onClick={() => setLockedTooltipId(null)}
+        />
+      )}
+      
       <div className="relative flex justify-center items-center" style={{ width: "850px", height: "780px" }}>
         <svg width="850" height="780" viewBox="0 0 850 780" style={{ overflow: "visible" }}>
           {/* Background */}
