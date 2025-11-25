@@ -136,6 +136,8 @@ const Index = () => {
   const [tempApiKey, setTempApiKey] = useState("");
   const [showApiKey, setShowApiKey] = useState(false);
   const [isKeySaved, setIsKeySaved] = useState(false);
+  const [inputMode, setInputMode] = useState<'ai' | 'manual'>('ai');
+  const [manualAssumptions, setManualAssumptions] = useState<string[]>(['']);
 
   const loadingMessages = [
     "Applying first principles thinking...",
@@ -196,21 +198,33 @@ const Index = () => {
     setError(null);
     setShowResults(false);
     
-    try {
-      // Simulate API call with 3 second delay
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      // Use mock data
-      setAnalysisData(MOCK_ANALYSIS);
+try {
+      // Call our API endpoint
+      const response = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          productContext: inputMode === 'ai' ? userInput : null,
+          manualAssumptions: inputMode === 'manual' 
+            ? manualAssumptions.filter(a => a.trim()) 
+            : null,
+          mode: inputMode,
+        }), 
+      });
+
+      if (!response.ok) {
+        throw new Error('API request failed');
+      }
+
+      const data = await response.json();
+      console.log("🔍 API Response:", JSON.stringify(data, null, 2));
+      setAnalysisData(data);
       setIsLoading(false);
       setShowResults(true);
       
-      const blindSpots = MOCK_ANALYSIS.assumptions.filter(a => a.isHiddenBlindSpot).length;
-      toast({
-        title: "Analysis Complete",
-        description: `Found ${MOCK_ANALYSIS.assumptions.length} assumptions (${blindSpots} blind spots)`,
-      });
-      
+     
     } catch (err) {
       console.error('Analysis error:', err);
       setIsLoading(false);
@@ -224,7 +238,9 @@ const Index = () => {
     }
   };
 
-  const isInputValid = userInput.trim().length >= 10;
+  const isInputValid = inputMode === 'ai' 
+  ? userInput.trim().length >= 10
+  : manualAssumptions.filter(a => a.trim().length > 0).length >= 1;
 
   return (
     <div className="h-screen flex flex-col bg-background">
@@ -311,20 +327,93 @@ const Index = () => {
         <div className="w-full lg:w-[450px] p-10 flex flex-col border-b lg:border-b-0 border-border overflow-y-auto">
           <h2 className="text-2xl font-bold mb-6">What Are You Building?</h2>
           
-          <Textarea
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            placeholder="e.g., A valet parking app that lets you park anywhere in SF&#10;e.g., A dark mode feature for our fitness app&#10;e.g., An AI-powered design system for enterprise teams"
-            className="flex-1 min-h-[200px] text-base mb-4 resize-none"
-            maxLength={500}
-          />
+          {/* Mode Toggle */}
+          <div className="flex gap-2 mb-4">
+              <button
+                onClick={() => setInputMode('ai')}
+                className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all ${
+                  inputMode === 'ai'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                ✨ AI Analysis
+              </button>
+              <button
+                onClick={() => setInputMode('manual')}
+                className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all ${
+                  inputMode === 'manual'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                ✍️ Manual Entry
+              </button>
+            </div>
+
+          {/* Conditional Input Based on Mode */}
+          {inputMode === 'ai' ? (
+              // AI Mode - Existing textarea
+              <Textarea
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                placeholder="e.g., A valet parking app that lets you park anywhere in SF&#10;e.g., A dark mode feature for our fitness app&#10;e.g., An AI-powered design system for enterprise teams"
+                className="flex-1 min-h-[200px] text-base mb-4 resize-none"
+                maxLength={500}
+              />
+            ) : (
+              // Manual Mode - New input fields
+              <div className="space-y-3 mb-4">
+                <p className="text-sm text-gray-600 mb-3">
+                  Enter your assumptions one at a time. We'll analyze them for risk and testability.
+                </p>
+                {manualAssumptions.map((assumption, index) => (
+                  <div key={index} className="flex gap-2">
+                    <input
+                      type="text"
+                      value={assumption}
+                      onChange={(e) => {
+                        const updated = [...manualAssumptions];
+                        updated[index] = e.target.value;
+                        setManualAssumptions(updated);
+                      }}
+                      placeholder={`Assumption ${index + 1}: e.g., "Users will pay $15/month for this tool"`}
+                      className="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      maxLength={150}
+                    />
+                    {manualAssumptions.length > 1 && (
+                      <button
+                        onClick={() => {
+                          const updated = manualAssumptions.filter((_, i) => i !== index);
+                          setManualAssumptions(updated);
+                        }}
+                        className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
+                ))}
+                {manualAssumptions.length < 8 && (
+                  <button
+                    onClick={() => setManualAssumptions([...manualAssumptions, ''])}
+                    className="w-full py-2 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-blue-500 hover:text-blue-600 transition-colors"
+                  >
+                    + Add Another Assumption
+                  </button>
+                )}
+              </div>
+            )}
           
           <div className="flex items-center justify-between mb-6">
             <span className="text-sm text-muted-foreground">
-              {userInput.length} / 500 characters
+            {inputMode === 'ai' 
+  ? `${userInput.length} / 500 characters`
+  : `${manualAssumptions.filter(a => a.trim()).length} / 8 assumptions`
+} 
             </span>
             <span className={`text-sm ${isInputValid ? "text-primary font-medium" : "text-muted-foreground"}`}>
-              {isInputValid ? "✓ Ready to analyze" : "Min. 10 characters"}
+            {isInputValid ? "✓ Ready to analyze" : inputMode === 'ai' ? "Min. 10 characters" : "Add at least 1 assumption"} 
             </span>
           </div>
 
@@ -335,7 +424,7 @@ const Index = () => {
             className="w-full text-lg py-6 h-auto mb-4"
           >
             <Sparkles className="mr-2 w-5 h-5" />
-            Find My Blind Spots
+            {inputMode === 'ai' ? 'Find My Blind Spots' : 'Analyze My Assumptions'}
           </Button>
           
           <p className="text-sm text-muted-foreground text-center">
