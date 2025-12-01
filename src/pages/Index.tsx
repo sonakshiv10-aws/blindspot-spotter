@@ -254,7 +254,7 @@ try {
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
                 placeholder="e.g., A valet parking app that lets you park anywhere in SF&#10;e.g., A dark mode feature for our fitness app&#10;e.g., An AI-powered design system for enterprise teams"
-                className="flex-1 min-h-[200px] text-base mb-4 resize-none"
+                className="flex-1 min-h-[120px] text-base mb-4 resize-none"
                 maxLength={500}
               />
             ) : (
