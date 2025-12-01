@@ -207,7 +207,7 @@ try {
   return (
     <div className="h-screen flex flex-col bg-background">
       {/* Top Header - 15% */}
-      <header className="flex flex-col items-center justify-center px-6 py-6 border-b border-border relative max-w-[1600px] mx-auto w-full">
+      <header className="flex flex-col items-center justify-center px-4 py-6 border-b border-border relative max-w-[1600px] mx-auto w-full">
         <h1 className="text-3xl lg:text-5xl font-bold text-center mb-2">
           Find the Assumptions You Didn't Know You Had
         </h1>
@@ -217,9 +217,9 @@ try {
         </header>
 
     {/* Main Section - 85% */}
-    <main className="flex-1 flex flex-col lg:flex-row justify-center max-w-[1600px] mx-auto w-full lg:gap-[60px] xl:px-10">
+    <main className="flex-1 flex flex-col xl:flex-row justify-center max-w-[1600px] mx-auto w-full xl:gap-[60px] px-4 xl:px-10">
       {/* Left Panel - Fixed 450px width on desktop, full width on mobile */}
-      <div className="w-full lg:w-[450px] p-6 lg:p-10 flex flex-col border-b lg:border-b-0 border-border">
+      <div className="w-full xl:w-[450px] p-6 xl:p-10 flex flex-col border-b xl:border-b-0 border-border xl:flex-shrink-0">
         <h2 className="text-2xl font-bold mb-6">What Are You Building?</h2>
 
         {/* Mode Toggle */}
@@ -329,7 +329,7 @@ try {
           </div>
 
         {/* Right Panel - Flexible width on desktop, full width on mobile */}
-        <div className="flex-1 w-full lg:min-w-[950px] overflow-y-auto flex flex-col items-center">
+        <div className="flex-1 w-full overflow-y-auto flex flex-col items-center">
           {!showResults && !isLoading && (
             <div className="h-full flex items-center justify-center p-6 lg:p-10 w-full">
               <div className="space-y-6 w-full max-w-[1100px]">
@@ -380,7 +380,7 @@ try {
           )}
 
           {showResults && analysisData && (
-            <div className="p-4 lg:p-10 space-y-4 lg:space-y-6 w-full max-w-[1100px]">
+           <div className="p-0 xl:p-10 space-y-3 xl:space-y-6 w-full max-w-[1100px]"> 
               {/* Blind Spots Badge */}
               {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length > 0 && (
                 <div className="inline-flex items-center gap-2 bg-red-50 text-red-700 px-4 py-2 rounded-full font-semibold text-sm shadow-sm">
@@ -402,7 +402,7 @@ try {
               )}
 
               {/* Analysis Matrix - 700x700 */}
-              <div className="bg-white rounded-xl shadow-lg p-2 lg:p-8 overflow-x-auto w-full">
+              <div className="bg-white rounded-lg shadow-lg p-0 xl:p-8 w-full -mx-4 xl:mx-0">
   <AnalysisMatrix assumptions={analysisData.assumptions} />
 </div>
 

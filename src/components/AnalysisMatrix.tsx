@@ -190,15 +190,15 @@ Time: ${selectedAssumption.experiment.timeframe}`;
   
   return (
     <>
-    <div className="relative flex justify-center items-center w-full max-w-[850px] mx-auto px-4 lg:px-0" style={{ minHeight: "600px", zIndex: 10 }}>  
+  <div className="relative flex justify-center items-center w-full mx-auto" style={{ zIndex: 10 }}>   
   <svg 
-    width="100%" 
-    height="100%" 
-    viewBox="0 0 850 780" 
-    preserveAspectRatio="xMidYMid meet"
-    className="max-w-full h-auto"
-    style={{ overflow: "visible", position: "relative", zIndex: 10 }}
-  >
+  width="100%" 
+  height="100%" 
+  viewBox="0 0 850 780" 
+  preserveAspectRatio="xMidYMid meet"
+  className="w-full h-auto"
+  style={{ overflow: "visible", position: "relative", zIndex: 10, minHeight: "500px" }}
+>
           {/* Background */}
           <rect x="100" y="50" width="650" height="650" fill="#FAFAFA" rx="8" />
 
