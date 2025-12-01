@@ -319,7 +319,8 @@ try {
             <Sparkles className="inline w-4 h-4 mr-1" />
             Using first principles thinking
           </p>
-        </div>
+          </header>
+          </div>
 
         {/* Right Panel - Flexible width on desktop, full width on mobile */}
         <div className="flex-1 w-full lg:min-w-[950px] overflow-y-auto flex flex-col items-center">
