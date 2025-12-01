@@ -220,7 +220,7 @@ try {
     {/* Main Section - 85% */}
     <main className="flex-1 flex flex-col xl:flex-row justify-center max-w-[1600px] mx-auto w-full xl:gap-[60px] px-4 xl:px-10">
       {/* Left Panel - Fixed 450px width on desktop, full width on mobile */}
-      <div className="w-full xl:w-[450px] p-6 xl:p-10 flex flex-col border-b xl:border-b-0 border-border xl:flex-shrink-0 xl:overflow-y-auto xl:max-h-screen">
+      <div className="w-full xl:w-[450px] p-6 xl:p-8 flex flex-col border-b xl:border-b-0 border-border xl:flex-shrink-0">
         <h2 className="text-2xl font-bold mb-6">What Are You Building?</h2>
 
         {/* Mode Toggle */}
@@ -254,7 +254,7 @@ try {
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
                 placeholder="e.g., A valet parking app that lets you park anywhere in SF&#10;e.g., A dark mode feature for our fitness app&#10;e.g., An AI-powered design system for enterprise teams"
-                className="flex-1 min-h-[100px] text-base mb-4 resize-none"
+                className="flex-1 min-h-[90px] text-base mb-4 resize-none"
                 maxLength={500}
               />
             ) : (
