@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { Sparkles, Settings, Eye, EyeOff, Check } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { toast } from "@/hooks/use-toast";
 import MatrixPreview from "@/components/MatrixPreview";
@@ -129,13 +129,8 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [currentLoadingMessage, setCurrentLoadingMessage] = useState("");
-  const [apiKey, setApiKey] = useState<string | null>(null);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [analysisData, setAnalysisData] = useState<AnalysisData | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [tempApiKey, setTempApiKey] = useState("");
-  const [showApiKey, setShowApiKey] = useState(false);
-  const [isKeySaved, setIsKeySaved] = useState(false);
   const [inputMode, setInputMode] = useState<'ai' | 'manual'>('ai');
   const [manualAssumptions, setManualAssumptions] = useState<string[]>(['']);
 
@@ -145,16 +140,7 @@ const Index = () => {
     "Finding blind spots...",
   ];
 
-  // Load API key from localStorage on mount
-  useEffect(() => {
-    const storedKey = localStorage.getItem('claude_api_key');
-    if (storedKey) {
-      setApiKey(storedKey);
-      setTempApiKey(storedKey);
-    }
-  }, []);
-
-  useEffect(() => {
+    useEffect(() => {
     if (isLoading) {
       let index = 0;
       setCurrentLoadingMessage(loadingMessages[0]);
@@ -168,31 +154,7 @@ const Index = () => {
     }
   }, [isLoading]);
 
-  const handleSaveApiKey = () => {
-    if (!tempApiKey.trim()) {
-      toast({
-        title: "Error",
-        description: "Please enter an API key",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    localStorage.setItem('claude_api_key', tempApiKey);
-    setApiKey(tempApiKey);
-    setIsKeySaved(true);
-    
-    setTimeout(() => {
-      setIsKeySaved(false);
-      setIsSettingsOpen(false);
-    }, 1500);
-    
-    toast({
-      title: "Success",
-      description: "API key saved successfully",
-    });
-  };
-
+  
   const handleAnalyze = async () => {
     setIsLoading(true);
     setError(null);
@@ -253,90 +215,10 @@ try {
           AI-powered first principles analysis in 30 seconds
         </p>
         
-        {/* Settings Button */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setIsSettingsOpen(true)}
-          className="absolute top-4 right-4 gap-2"
-        >
-          <Settings className="w-4 h-4" />
-          Settings
-        </Button>
-      </header>
-      
-      {/* Settings Modal */}
-      <Dialog open={isSettingsOpen} onOpenChange={setIsSettingsOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>API Configuration (Testing Only)</DialogTitle>
-            <DialogDescription>
-              Enter your Claude API key to enable analysis. This is stored in your browser only.
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <label htmlFor="apiKey" className="text-sm font-medium">
-                Claude API Key
-              </label>
-              <div className="flex gap-2">
-                <Input
-                  id="apiKey"
-                  type={showApiKey ? "text" : "password"}
-                  placeholder="sk-ant-api03-..."
-                  value={tempApiKey}
-                  onChange={(e) => setTempApiKey(e.target.value)}
-                  className="flex-1"
-                />
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={() => setShowApiKey(!showApiKey)}
-                >
-                  {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </Button>
-              </div>
-            </div>
+        
+        
             
-            <Button 
-              onClick={handleSaveApiKey}
-              className="w-full"
-              disabled={isKeySaved}
-            >
-              {isKeySaved ? (
-                <>
-                  <Check className="w-4 h-4 mr-2" />
-                  API Key Saved
-                </>
-              ) : (
-                'Save Key'
-              )}
-            </Button>
             
-            <p className="text-sm text-muted-foreground">
-              ⚠️ For testing only. We'll move to secure backend before launch.
-            </p>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Main Section - 85% */}
-      <main className="h-[85vh] flex flex-col lg:flex-row justify-center max-w-[1600px] mx-auto w-full lg:gap-[60px] xl:px-10">
-        {/* Left Panel - Fixed 450px width on desktop, full width on mobile */}
-        <div className="w-full lg:w-[450px] p-10 flex flex-col border-b lg:border-b-0 border-border overflow-y-auto">
-          <h2 className="text-2xl font-bold mb-6">What Are You Building?</h2>
-          
-          {/* Mode Toggle */}
-          <div className="flex gap-2 mb-4">
-              <button
-                onClick={() => setInputMode('ai')}
-                className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all ${
-                  inputMode === 'ai'
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
                 ✨ AI Analysis
               </button>
               <button
@@ -513,7 +395,7 @@ try {
 
               {/* Analysis Complete Message */}
               <div className="text-center text-slate-600 text-sm pt-2 pb-4">
-                Analysis complete • Using mock data - real API will be connected via backend
+                Analysis complete 
               </div>
             </div>
           )}
