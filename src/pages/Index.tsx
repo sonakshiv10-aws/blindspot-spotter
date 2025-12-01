@@ -355,9 +355,9 @@ try {
                 </div>
 
                 {/* Example Label */}
-                <div className="text-center text-slate-500 text-sm pt-2 pb-4">
-                  Example: Valet parking app analysis
-                </div>
+                <div className="text-center text-slate-500 text-xs -mt-2 pb-4 xl:pb-0">
+  Example: Valet parking app analysis
+</div>
               </div>
             </div>
           )}
@@ -380,29 +380,29 @@ try {
           )}
 
           {showResults && analysisData && (
-           <div className="p-0 xl:p-10 space-y-3 xl:space-y-6 w-full max-w-[1100px]"> 
+           <div className="space-y-3 xl:space-y-6 w-full max-w-[1100px]"> 
               {/* Blind Spots Badge */}
               {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length > 0 && (
-                <div className="inline-flex items-center gap-2 bg-red-50 text-red-700 px-4 py-2 rounded-full font-semibold text-sm shadow-sm">
-                  🚨 {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length} Hidden Blind Spot{analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length > 1 ? 's' : ''} Found
-                </div>
-              )}
+  <div className="inline-flex items-center gap-2 bg-red-50 text-red-700 px-4 py-2 rounded-full font-semibold text-sm shadow-sm mx-4 xl:mx-0">
+    🚨 {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length} Hidden Blind Spot{analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length > 1 ? 's' : ''} Found
+  </div>
+)}
 
               {/* First Principles Insight */}
               {analysisData.firstPrinciplesInsight && (
-                <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6 shadow-sm">
-                  <h3 className="text-lg font-semibold text-purple-900 mb-2 flex items-center gap-2">
-                    <Sparkles className="w-5 h-5" />
-                    First Principles Insight
-                  </h3>
-                  <p className="text-slate-700 leading-relaxed">
-                    {analysisData.firstPrinciplesInsight}
-                  </p>
-                </div>
-              )}
+  <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-4 shadow-sm mx-4 xl:mx-0">
+    <h3 className="text-base font-semibold text-purple-900 mb-2 flex items-center gap-2">
+      <Sparkles className="w-4 h-4" />
+      First Principles Insight
+    </h3>
+    <p className="text-sm text-slate-700 leading-relaxed">
+      {analysisData.firstPrinciplesInsight}
+    </p>
+  </div>
+)}
 
               {/* Analysis Matrix - 700x700 */}
-              <div className="bg-white rounded-lg shadow-lg p-0 xl:p-8 w-full -mx-4 xl:mx-0">
+              <div className="bg-white xl:rounded-lg xl:shadow-lg p-0 xl:p-8 w-screen xl:w-full -mx-4 xl:mx-0">
   <AnalysisMatrix assumptions={analysisData.assumptions} />
 </div>
 
