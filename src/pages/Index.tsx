@@ -214,7 +214,14 @@ try {
         <p className="text-lg lg:text-xl text-muted-foreground text-center">
           AI-powered first principles analysis in 30 seconds
         </p>
-        
+        </header>
+
+    {/* Main Section - 85% */}
+    <main className="h-[85vh] flex flex-col lg:flex-row justify-center max-w-[1600px] mx-auto w-full lg:gap-[60px] xl:px-10">
+      {/* Left Panel - Fixed 450px width on desktop, full width on mobile */}
+      <div className="w-full lg:w-[450px] p-10 flex flex-col border-b lg:border-b-0 border-border overflow-y-auto">
+        <h2 className="text-2xl font-bold mb-6">What Are You Building?</h2>
+
         {/* Mode Toggle */}
       <div className="flex gap-2 mb-4">
         <button
@@ -318,8 +325,7 @@ try {
           <p className="text-sm text-muted-foreground text-center">
             <Sparkles className="inline w-4 h-4 mr-1" />
             Using first principles thinking
-          </p>
-          </header>
+          </p>          
           </div>
 
         {/* Right Panel - Flexible width on desktop, full width on mobile */}
