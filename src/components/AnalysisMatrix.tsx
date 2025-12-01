@@ -194,10 +194,10 @@ Time: ${selectedAssumption.experiment.timeframe}`;
   <svg 
   width="100%" 
   height="100%" 
-  viewBox="0 0 850 780" 
+  viewBox="50 20 750 730"
   preserveAspectRatio="xMidYMid meet"
-  className="w-full h-auto"
-  style={{ overflow: "visible", position: "relative", zIndex: 10, minHeight: "500px" }}
+  className="w-full h-auto min-h-[500px] xl:min-h-0"
+  style={{ overflow: "visible", position: "relative", zIndex: 10 }}
 >
           {/* Background */}
           <rect x="100" y="50" width="650" height="650" fill="#FAFAFA" rx="8" />
@@ -226,7 +226,7 @@ Time: ${selectedAssumption.experiment.timeframe}`;
             x="50"
             y="212"
             textAnchor="middle"
-            fontSize="15"
+            className="text-xs xl:text-sm"
             fontWeight="500"
             fill="#374151"
             transform="rotate(-90 50 212)"
@@ -237,7 +237,7 @@ Time: ${selectedAssumption.experiment.timeframe}`;
             x="50"
             y="537"
             textAnchor="middle"
-            fontSize="15"
+            className="text-xs xl:text-sm"
             fontWeight="500"
             fill="#374151"
             transform="rotate(-90 50 537)"
@@ -246,34 +246,33 @@ Time: ${selectedAssumption.experiment.timeframe}`;
           </text>
 
           {/* X-axis labels - closer to matrix */}
-          <text x="100" y="725" textAnchor="start" fontSize="15" fontWeight="500" fill="#374151">
+          <text x="100" y="725" textAnchor="start" className="text-xs xl:text-sm" fontWeight="500" fill="#374151">
             ← Hard to Test
           </text>
-          <text x="750" y="725" textAnchor="end" fontSize="15" fontWeight="500" fill="#374151">
+          <text x="750" y="725" textAnchor="end" className="text-xs xl:text-sm" fontWeight="500" fill="#374151">
             Easy to Test →
           </text>
 
           {/* Quadrant labels - ALL OUTSIDE matrix with more spacing from X-axis */}
           {/* TOP-LEFT: Critical Risk - RED */}
-          <text x="100" y="30" textAnchor="start" fontSize="20" fontWeight="700" fill="#EF4444">
-            Critical Risk
-          </text>
+<text x="100" y="30" textAnchor="start" className="text-base xl:text-xl" fontWeight="700" fill="#EF4444">
+  Critical Risk
+</text>
 
-          {/* TOP-RIGHT: Test Now - GREEN */}
-          <text x="750" y="30" textAnchor="end" fontSize="20" fontWeight="700" fill="#10B981">
-            Test Now
-          </text>
+{/* TOP-RIGHT: Test Now - GREEN */}
+<text x="750" y="30" textAnchor="end" className="text-base xl:text-xl" fontWeight="700" fill="#10B981">
+  Test Now
+</text>
 
-          {/* BOTTOM-LEFT: Defer / Monitor - BLUE */}
-          <text x="100" y="770" textAnchor="start" fontSize="20" fontWeight="700" fill="#3B82F6">
-            Defer / Monitor
-          </text>
+{/* BOTTOM-LEFT: Defer / Monitor - BLUE */}
+<text x="100" y="770" textAnchor="start" className="text-base xl:text-xl" fontWeight="700" fill="#3B82F6">
+  Defer / Monitor
+</text>
 
-          {/* BOTTOM-RIGHT: Quick Wins - YELLOW */}
-          <text x="750" y="770" textAnchor="end" fontSize="20" fontWeight="700" fill="#F59E0B">
-            Quick Wins
-          </text>
-
+{/* BOTTOM-RIGHT: Quick Wins - YELLOW */}
+<text x="750" y="770" textAnchor="end" className="text-base xl:text-xl" fontWeight="700" fill="#F59E0B">
+  Quick Wins
+</text>
           {/* Plot assumptions */}
           {assumptions.map((assumption, index) => {
             // Add padding to keep dots inside viewBox
@@ -320,7 +319,7 @@ const y = Math.max(minY, Math.min(maxY, rawY + jitterY));
                 {/* Pulsing glow for blind spots */}
                 {assumption.isHiddenBlindSpot && (
                   <circle cx={x} cy={y} r="12" fill={color} opacity="0.3">
-                    <animate attributeName="r" from="8" to="16" dur="1.5s" repeatCount="indefinite" />
+                    <animate attributeName="r" from="10" to="18" dur="1.5s" repeatCount="indefinite" />
                     <animate attributeName="opacity" from="0.5" to="0" dur="1.5s" repeatCount="indefinite" />
                   </circle>
                 )}
@@ -329,7 +328,7 @@ const y = Math.max(minY, Math.min(maxY, rawY + jitterY));
                 <circle
                   cx={x}
                   cy={y}
-                  r={isHovered ? 10 : 8}
+                  r={isHovered ? 12 : 10}
                   fill={color}
                   opacity="0.9"
                   filter={isHovered ? "drop-shadow(0 0 8px rgba(0,0,0,0.3))" : ""}
