@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { toast } from "@/hooks/use-toast";
 import MatrixPreview from "@/components/MatrixPreview";
 import AnalysisMatrix from "@/components/AnalysisMatrix";
+import AssumptionList from "@/components/AssumptionList";
 
 interface Assumption {
   id: string;
@@ -402,10 +403,13 @@ try {
 )}
 
               {/* Analysis Matrix - 700x700 */}
-              <div className="bg-white xl:rounded-lg xl:shadow-lg p-0 xl:p-8 w-screen xl:w-full -mx-4 xl:mx-0">
+              <div className="hidden lg:block bg-white xl:rounded-lg xl:shadow-lg p-0 xl:p-8 w-screen xl:w-full -mx-4 xl:mx-0">
   <AnalysisMatrix assumptions={analysisData.assumptions} />
 </div>
 
+<div className="lg:hidden">
+  <AssumptionList assumptions={analysisData.assumptions} />
+</div>
               {/* Analysis Complete Message */}
               <div className="text-center text-slate-600 text-sm pt-2 pb-4">
                 Analysis complete 
