@@ -215,12 +215,18 @@ try {
           AI-powered first principles analysis in 30 seconds
         </p>
         
-        
-        
-            
-            
-                ✨ AI Analysis
-              </button>
+        {/* Mode Toggle */}
+      <div className="flex gap-2 mb-4">
+        <button
+          onClick={() => setInputMode('ai')}
+          className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all ${
+            inputMode === 'ai'
+              ? 'bg-blue-600 text-white shadow-md'
+              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+          }`}
+        >
+          ✨ AI Analysis
+        </button>
               <button
                 onClick={() => setInputMode('manual')}
                 className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all ${
