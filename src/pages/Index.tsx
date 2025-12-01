@@ -207,7 +207,7 @@ try {
   return (
     <div className="h-screen flex flex-col bg-background">
       {/* Top Header - 15% */}
-      <header className="h-[15vh] flex flex-col items-center justify-center px-6 border-b border-border relative max-w-[1600px] mx-auto w-full">
+      <header className="flex flex-col items-center justify-center px-6 py-6 border-b border-border relative max-w-[1600px] mx-auto w-full">
         <h1 className="text-3xl lg:text-5xl font-bold text-center mb-2">
           Find the Assumptions You Didn't Know You Had
         </h1>
@@ -217,9 +217,9 @@ try {
         </header>
 
     {/* Main Section - 85% */}
-    <main className="h-[85vh] flex flex-col lg:flex-row justify-center max-w-[1600px] mx-auto w-full lg:gap-[60px] xl:px-10">
+    <main className="flex-1 flex flex-col lg:flex-row justify-center max-w-[1600px] mx-auto w-full lg:gap-[60px] xl:px-10">
       {/* Left Panel - Fixed 450px width on desktop, full width on mobile */}
-      <div className="w-full lg:w-[450px] p-10 flex flex-col border-b lg:border-b-0 border-border overflow-y-auto">
+      <div className="w-full lg:w-[450px] p-6 lg:p-10 flex flex-col border-b lg:border-b-0 border-border">
         <h2 className="text-2xl font-bold mb-6">What Are You Building?</h2>
 
         {/* Mode Toggle */}
