@@ -332,7 +332,7 @@ try {
         {/* Right Panel - Flexible width on desktop, full width on mobile */}
         <div className="flex-1 w-full overflow-y-auto flex flex-col items-center">
           {!showResults && !isLoading && (
-            <div className="h-full flex items-center justify-center p-6 lg:p-10 w-full">
+            <div className="hidden lg:flex h-full items-center justify-center p-6 lg:p-10 w-full">
               <div className="space-y-6 w-full max-w-[1100px]">
                 {/* Blind Spots Badge */}
                 <div className="inline-flex items-center gap-2 bg-red-50 text-red-700 px-4 py-2 rounded-full font-semibold text-sm shadow-sm">
