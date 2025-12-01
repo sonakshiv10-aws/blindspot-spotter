@@ -190,7 +190,7 @@ Time: ${selectedAssumption.experiment.timeframe}`;
   
   return (
     <>
-      <div className="relative flex justify-center items-center w-full max-w-[850px] mx-auto" style={{ minHeight: "780px", zIndex: 10 }}>
+    <div className="relative flex justify-center items-center w-full max-w-[850px] mx-auto px-4 lg:px-0" style={{ minHeight: "600px", zIndex: 10 }}>  
   <svg 
     width="100%" 
     height="100%" 

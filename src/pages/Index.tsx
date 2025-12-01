@@ -380,7 +380,7 @@ try {
           )}
 
           {showResults && analysisData && (
-            <div className="p-6 lg:p-10 space-y-6 w-full max-w-[1100px]">
+            <div className="p-4 lg:p-10 space-y-4 lg:space-y-6 w-full max-w-[1100px]">
               {/* Blind Spots Badge */}
               {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length > 0 && (
                 <div className="inline-flex items-center gap-2 bg-red-50 text-red-700 px-4 py-2 rounded-full font-semibold text-sm shadow-sm">
@@ -402,9 +402,9 @@ try {
               )}
 
               {/* Analysis Matrix - 700x700 */}
-              <div className="bg-white rounded-xl shadow-lg p-4 lg:p-8 overflow-x-auto">
-                <AnalysisMatrix assumptions={analysisData.assumptions} />
-              </div>
+              <div className="bg-white rounded-xl shadow-lg p-2 lg:p-8 overflow-x-auto w-full">
+  <AnalysisMatrix assumptions={analysisData.assumptions} />
+</div>
 
               {/* Analysis Complete Message */}
               <div className="text-center text-slate-600 text-sm pt-2 pb-4">
