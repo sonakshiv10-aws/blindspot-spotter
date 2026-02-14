@@ -4,20 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Copy, Check } from "lucide-react";
 import { toast } from "sonner";
 
-interface Assumption {
-  id: string;
-  text: string;
-  isHiddenBlindSpot: boolean;
-  risk: number;
-  testability: number;
-  category: string;
-  experiment: {
-    name: string;
-    description: string;
-    timeframe: string;
-    resources: string;
-  };
-}
+import { Assumption } from "@/types/assumption";
 
 interface AssumptionListProps {
   assumptions: Assumption[];
@@ -51,9 +38,9 @@ const AssumptionList = ({ assumptions }: AssumptionListProps) => {
     const text = `Experiment: ${selectedAssumption.experiment.name}
 Assumption: ${selectedAssumption.text}
 Risk: ${selectedAssumption.risk}/10
-Method: ${selectedAssumption.experiment.description}
-Cost: ${selectedAssumption.experiment.resources}
-Time: ${selectedAssumption.experiment.timeframe}`;
+Method: ${selectedAssumption.experiment.method}
+Cost: ${selectedAssumption.experiment.cost}
+Time: ${selectedAssumption.experiment.time}`;
 
     navigator.clipboard.writeText(text);
     setCopied(true);
@@ -180,17 +167,17 @@ Time: ${selectedAssumption.experiment.timeframe}`;
                   <div>
                     <div className="text-xs font-medium text-blue-800 mb-1">How to Test:</div>
                     <div className="text-sm text-blue-700 leading-relaxed">
-                      {selectedAssumption.experiment.description}
+                      {selectedAssumption.experiment.method}
                     </div>
                   </div>
                   <div className="flex gap-4 text-sm">
                     <div>
                       <span className="font-medium text-blue-800">💰 Cost:</span>{" "}
-                      <span className="text-blue-700">{selectedAssumption.experiment.resources}</span>
+                      <span className="text-blue-700">{selectedAssumption.experiment.cost}</span>
                     </div>
                     <div>
                       <span className="font-medium text-blue-800">⏱️ Time:</span>{" "}
-                      <span className="text-blue-700">{selectedAssumption.experiment.timeframe}</span>
+                      <span className="text-blue-700">{selectedAssumption.experiment.time}</span>
                     </div>
                   </div>
                 </div>

@@ -8,25 +8,9 @@ import { toast } from "@/hooks/use-toast";
 import MatrixPreview from "@/components/MatrixPreview";
 import AnalysisMatrix from "@/components/AnalysisMatrix";
 import AssumptionList from "@/components/AssumptionList";
+import CopyFullAnalysis from "@/components/CopyFullAnalysis";
 
-interface Assumption {
-  id: string;
-  text: string;
-  isHiddenBlindSpot: boolean;
-  risk: number;
-  testability: number;
-  experiment: {
-    name: string;
-    method: string;
-    cost: string;
-    time: string;
-  };
-}
-
-interface AnalysisData {
-  firstPrinciplesInsight: string;
-  assumptions: Assumption[];
-}
+import { Assumption, AnalysisData } from "@/types/assumption";
 
 const MOCK_ANALYSIS: AnalysisData = {
   "firstPrinciplesInsight": "The core assumption isn't about parking scarcity—it's about whether people value optionality over planning. Valet services work when spontaneity has higher value than the cost premium. Test: Are your users making last-minute decisions, or do they plan their parking in advance?",
@@ -382,12 +366,18 @@ try {
 
           {showResults && analysisData && (
            <div className="space-y-3 xl:space-y-6 w-full max-w-[1100px]"> 
-              {/* Blind Spots Badge */}
-              {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length > 0 && (
-  <div className="inline-flex items-center gap-2 bg-red-50 text-red-700 px-4 py-2 rounded-full font-semibold text-sm shadow-sm mx-4 xl:mx-0">
-    🚨 {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length} Hidden Blind Spot{analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length > 1 ? 's' : ''} Found
-  </div>
-)}
+              {/* Blind Spots Badge + Copy Button Row */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mx-4 xl:mx-0">
+                {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length > 0 && (
+                  <div className="inline-flex items-center gap-2 bg-red-50 text-red-700 px-4 py-2 rounded-full font-semibold text-sm shadow-sm">
+                    🚨 {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length} Hidden Blind Spot{analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length > 1 ? 's' : ''} Found
+                  </div>
+                )}
+                <CopyFullAnalysis 
+                  assumptions={analysisData.assumptions} 
+                  userInput={inputMode === 'ai' ? userInput : manualAssumptions.filter(a => a.trim()).join(', ')} 
+                />
+              </div>
 
               {/* First Principles Insight */}
               {analysisData.firstPrinciplesInsight && (
