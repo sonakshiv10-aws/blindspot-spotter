@@ -143,7 +143,16 @@ const DownloadPDF = ({ assumptions, userInput, firstPrinciplesInsight }: Downloa
         var q = quadrantsList[qi];
         if (q.items.length === 0) continue;
 
-        checkPage(70);
+        // Calculate first card height to prevent orphaned headers
+        var firstAssumption = q.items[0];
+        doc.setFontSize(9);
+        var firstTextLines = doc.splitTextToSize(firstAssumption.text, contentWidth - 24);
+        var firstMethodLines = doc.splitTextToSize(firstAssumption.experiment.method, contentWidth - 24);
+        var firstBlindSpotExtra = firstAssumption.isHiddenBlindSpot ? 7 : 0;
+        var firstCardHeight = 14 + firstTextLines.length * 4.5 + firstBlindSpotExtra + 6 + 6 + firstMethodLines.length * 4 + 12;
+        // Check if header (14mm) + first card fit on current page
+        checkPage(14 + firstCardHeight + 8);
+
         doc.setFillColor(q.bgR, q.bgG, q.bgB);
         doc.roundedRect(margin, y, contentWidth, 10, 2, 2, "F");
         doc.setFont("helvetica", "bold");
@@ -155,8 +164,8 @@ const DownloadPDF = ({ assumptions, userInput, firstPrinciplesInsight }: Downloa
         for (var ai = 0; ai < q.items.length; ai++) {
           var assumption = q.items[ai];
           doc.setFontSize(9);
-          var textLines = doc.splitTextToSize(assumption.text, contentWidth - 20);
-          var methodLines = doc.splitTextToSize(assumption.experiment.method, contentWidth - 20);
+          var textLines = doc.splitTextToSize(assumption.text, contentWidth - 24);
+          var methodLines = doc.splitTextToSize(assumption.experiment.method, contentWidth - 24);
           var blindSpotExtra = assumption.isHiddenBlindSpot ? 7 : 0;
           var cardHeight = 14 + textLines.length * 4.5 + blindSpotExtra + 6 + 6 + methodLines.length * 4 + 12;
 
