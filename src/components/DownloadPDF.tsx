@@ -143,7 +143,7 @@ const DownloadPDF = ({ assumptions, userInput, firstPrinciplesInsight }: Downloa
         var q = quadrantsList[qi];
         if (q.items.length === 0) continue;
 
-        checkPage(20);
+        checkPage(70);
         doc.setFillColor(q.bgR, q.bgG, q.bgB);
         doc.roundedRect(margin, y, contentWidth, 10, 2, 2, "F");
         doc.setFont("helvetica", "bold");
@@ -155,10 +155,10 @@ const DownloadPDF = ({ assumptions, userInput, firstPrinciplesInsight }: Downloa
         for (var ai = 0; ai < q.items.length; ai++) {
           var assumption = q.items[ai];
           doc.setFontSize(9);
-          var textLines = doc.splitTextToSize(assumption.text, contentWidth - 16);
-          var methodLines = doc.splitTextToSize(assumption.experiment.method, contentWidth - 24);
+          var textLines = doc.splitTextToSize(assumption.text, contentWidth - 20);
+          var methodLines = doc.splitTextToSize(assumption.experiment.method, contentWidth - 20);
           var blindSpotExtra = assumption.isHiddenBlindSpot ? 7 : 0;
-          var cardHeight = 12 + textLines.length * 4.5 + blindSpotExtra + 6 + 6 + methodLines.length * 4 + 10;
+          var cardHeight = 14 + textLines.length * 4.5 + blindSpotExtra + 6 + 6 + methodLines.length * 4 + 12;
 
           checkPage(cardHeight + 4);
 
@@ -223,7 +223,9 @@ const DownloadPDF = ({ assumptions, userInput, firstPrinciplesInsight }: Downloa
           doc.setFont("helvetica", "normal");
           doc.setFontSize(7.5);
           doc.setTextColor(107, 114, 128);
-          doc.text("Cost: " + assumption.experiment.cost + "  |  Time: " + assumption.experiment.timeframe, margin + 8, cardY);
+          var costTimeText = "Cost: " + assumption.experiment.cost + "  |  Time: " + assumption.experiment.timeframe;
+          var costTimeLines = doc.splitTextToSize(costTimeText, contentWidth - 20);
+          doc.text(costTimeLines, margin + 8, cardY);
 
           y += cardHeight + 3;
         }
