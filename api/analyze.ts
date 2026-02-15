@@ -79,9 +79,9 @@ CRITICAL ENFORCEMENT:
           "category": "User Behavior",
           "experiment": {
             "name": "2-4 word action name",
-            "description": "Practical 3-sentence test method. (1) What to build/create and setup, (2) How to execute and what specific metrics to track, (3) Success criteria with concrete numbers/benchmarks.",
+            "method": "Practical 3-sentence test method. (1) What to build/create and setup, (2) How to execute and what specific metrics to track, (3) Success criteria with concrete numbers/benchmarks.",
             "timeframe": "1-2 weeks",
-            "resources": "$500, specific tools needed"
+            "cost": "$500, specific tools needed"
           }
         }
       ]
@@ -161,9 +161,9 @@ CRITICAL ENFORCEMENT:
               "category": "User Behavior",
               "experiment": {
                 "name": "Short, action-oriented name (2-4 words)",
-                "description": "Practical 3-sentence test method. (1) What to build/create and setup, (2) How to execute and what specific metrics to track, (3) Success criteria with concrete numbers/benchmarks.",
+                "method": "Practical 3-sentence test method. (1) What to build/create and setup, (2) How to execute and what specific metrics to track, (3) Success criteria with concrete numbers/benchmarks.",
                 "timeframe": "1-2 weeks",
-                "resources": "$500, landing page, 100 signups"
+                "cost": "$500, landing page, 100 signups"
               }
             }
           ]
