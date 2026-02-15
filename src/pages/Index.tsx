@@ -9,6 +9,7 @@ import MatrixPreview from "@/components/MatrixPreview";
 import AnalysisMatrix from "@/components/AnalysisMatrix";
 import AssumptionList from "@/components/AssumptionList";
 import CopyFullAnalysis from "@/components/CopyFullAnalysis";
+import DownloadPDF from "@/components/DownloadPDF";
 
 import { Assumption, AnalysisData } from "@/types/assumption";
 
@@ -373,10 +374,17 @@ try {
                     🚨 {analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length} Hidden Blind Spot{analysisData.assumptions.filter(a => a.isHiddenBlindSpot).length > 1 ? 's' : ''} Found
                   </div>
                 )}
-                <CopyFullAnalysis 
-                  assumptions={analysisData.assumptions} 
-                  userInput={inputMode === 'ai' ? userInput : manualAssumptions.filter(a => a.trim()).join(', ')} 
-                />
+                <div className="flex items-center gap-1">
+                  <CopyFullAnalysis 
+                    assumptions={analysisData.assumptions} 
+                    userInput={inputMode === 'ai' ? userInput : manualAssumptions.filter(a => a.trim()).join(', ')} 
+                  />
+                  <DownloadPDF 
+                    assumptions={analysisData.assumptions} 
+                    userInput={inputMode === 'ai' ? userInput : manualAssumptions.filter(a => a.trim()).join(', ')}
+                    firstPrinciplesInsight={analysisData.firstPrinciplesInsight}
+                  />
+                </div>
               </div>
 
               {/* First Principles Insight */}
