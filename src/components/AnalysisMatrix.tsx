@@ -131,7 +131,7 @@ Assumption: ${selectedAssumption.text}
 Risk: ${selectedAssumption.risk}/10
 Method: ${selectedAssumption.experiment.method}
 Cost: ${selectedAssumption.experiment.cost}
-Time: ${selectedAssumption.experiment.time}`;
+Time: ${selectedAssumption.experiment.timeframe}`;
 
     navigator.clipboard.writeText(text);
     setCopied(true);
@@ -470,7 +470,7 @@ const y = Math.max(minY, Math.min(maxY, rawY + jitterY));
                       </div>
                       <div>
                         <span className="font-medium text-blue-800">⏱️ Time:</span>{" "}
-                        <span className="text-blue-700">{selectedAssumption.experiment.time}</span>
+                        <span className="text-blue-700">{selectedAssumption.experiment.timeframe}</span>
                       </div>
                     </div>
                     </div>                

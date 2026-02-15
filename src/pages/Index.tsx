@@ -25,7 +25,7 @@ const MOCK_ANALYSIS: AnalysisData = {
         "name": "Parking Data Analysis",
         "method": "Research SFMTA reports + survey 50 drivers about parking difficulty",
         "cost": "$0-500",
-        "time": "2 days"
+        "timeframe": "2 days"
       }
     },
     {
@@ -38,7 +38,7 @@ const MOCK_ANALYSIS: AnalysisData = {
         "name": "Trust Experiment",
         "method": "Offer manual valet service to 20 people, track acceptance rate",
         "cost": "$200",
-        "time": "3 days"
+        "timeframe": "3 days"
       }
     },
     {
@@ -51,7 +51,7 @@ const MOCK_ANALYSIS: AnalysisData = {
         "name": "Price Sensitivity Test",
         "method": "Survey 100 drivers with different price points ($5, $10, $15, $20)",
         "cost": "$100",
-        "time": "1 week"
+        "timeframe": "1 week"
       }
     },
     {
@@ -64,7 +64,7 @@ const MOCK_ANALYSIS: AnalysisData = {
         "name": "Legal Consultation",
         "method": "Meet with insurance lawyers and review liability precedents",
         "cost": "$2,000-5,000",
-        "time": "2-4 weeks"
+        "timeframe": "2-4 weeks"
       }
     },
     {
@@ -77,7 +77,7 @@ const MOCK_ANALYSIS: AnalysisData = {
         "name": "Manual Operations Test",
         "method": "Hire 3 valets for one day, track: time per park, wages, parking costs vs. user willingness to pay",
         "cost": "$500",
-        "time": "1 day"
+        "timeframe": "1 day"
       }
     },
     {
@@ -90,7 +90,7 @@ const MOCK_ANALYSIS: AnalysisData = {
         "name": "UX Usability Test",
         "method": "Test voice booking or one-tap interface with 15 users in car simulator",
         "cost": "$300",
-        "time": "3 days"
+        "timeframe": "3 days"
       }
     },
     {
@@ -103,7 +103,7 @@ const MOCK_ANALYSIS: AnalysisData = {
         "name": "Supply Analysis",
         "method": "Map demand patterns vs. valet availability in target neighborhoods",
         "cost": "$200",
-        "time": "1 week"
+        "timeframe": "1 week"
       }
     }
   ]

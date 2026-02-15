@@ -8,7 +8,7 @@ export interface Assumption {
     name: string;
     method: string;
     cost: string;
-    time: string;
+    timeframe: string;
   };
 }
 
