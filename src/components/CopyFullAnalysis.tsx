@@ -23,7 +23,7 @@ const formatAssumption = (a: Assumption): string => {
   Risk: ${a.risk}/10 | Testability: ${a.testability}/10${blindSpot}
   Experiment: ${a.experiment.name}
   How: ${a.experiment.method}
-  Cost: ${a.experiment.cost} | Time: ${a.experiment.time}`;
+  Cost: ${a.experiment.cost} | Time: ${a.experiment.timeframe}`;
 };
 
 const CopyFullAnalysis = ({ assumptions, userInput }: CopyFullAnalysisProps) => {
